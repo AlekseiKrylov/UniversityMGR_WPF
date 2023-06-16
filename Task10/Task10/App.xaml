@@ -1,10 +1,12 @@
 ﻿<Application x:Class="Task10.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Task10"
+             xmlns:l="clr-namespace:Task10"
+             xmlns:vm="clr-namespace:Task10.ViewModels"
              xmlns:cmd="clr-namespace:Task10.Infrastructure.Commands"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
-        <cmd:CloseAppCommand x:Key="CloseAppCommand"/>
+        <vm:ViewModelLocator x:Key="vmLocator" />
+        <cmd:CloseAppCommand x:Key="CloseAppCommand" />
     </Application.Resources>
 </Application>

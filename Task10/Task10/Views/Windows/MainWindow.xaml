@@ -5,14 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:Task10"
         xmlns:v="clr-namespace:Task10.Views"
-        xmlns:vm="clr-namespace:Task10.ViewModels"
-        xmlns:cmd="clr-namespace:Task10.Infrastructure.Commands"
         xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource vmLocator}}"
         Title="{Binding Title}"
         Height="450" Width="800">
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
