@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
+using Task10._TEST;
 
 namespace Task10
 {
@@ -22,10 +23,13 @@ namespace Task10
             .AddDatabase()
             .AddViewModels()
             ;
-        
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            using (var scope = AppHost!.Services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<DbInitializer>().DbInitializeAsync().Wait();
 
             await AppHost!.StartAsync();
         }
@@ -36,7 +40,7 @@ namespace Task10
 
             using (AppHost)
                 await AppHost!.StopAsync();
-            
+
             AppHost = null;
         }
     }
