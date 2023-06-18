@@ -14,11 +14,12 @@ namespace Task10
             AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
         }
 
-        private IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureServices(ConfigureServises);
 
-        private void ConfigureServises(HostBuilderContext hostContext, IServiceCollection services) => services
+        private static void ConfigureServises(HostBuilderContext hostContext, IServiceCollection services) => services
+            .AddDatabase()
             .AddViewModels()
             ;
         

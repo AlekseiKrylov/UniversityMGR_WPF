@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using Task10.Data;
 using Task10.ViewModels;
 
 namespace Task10
@@ -13,5 +12,12 @@ namespace Task10
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
             .AddSingleton<MainWindowViewModel>()
             ;
+
+        public static IServiceCollection AddDatabase(this IServiceCollection services) => services
+            .AddDbContext<Task10DbContext>(options =>
+            {
+                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Task10.db");
+                options.UseSqlite($"Filename={dbPath}");
+            });
     }
 }
