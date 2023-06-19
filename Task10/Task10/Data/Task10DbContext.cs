@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.IO;
 using Task10.Models;
 
 namespace Task10.Data
@@ -13,13 +11,5 @@ namespace Task10.Data
         public virtual DbSet<Teacher> Teachers { get; set; }
 
         public Task10DbContext(DbContextOptions<Task10DbContext> options) : base(options) { }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-
-        //    string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Task10.db");
-        //    optionsBuilder.UseSqlite($"Filename={dbPath}");
-        //}
     }
 }

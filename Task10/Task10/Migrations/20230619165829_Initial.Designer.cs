@@ -11,8 +11,8 @@ using Task10.Data;
 namespace Task10.Migrations
 {
     [DbContext(typeof(Task10DbContext))]
-    [Migration("20230618173532_ColumnNameFix")]
-    partial class ColumnNameFix
+    [Migration("20230619165829_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -12,10 +12,7 @@ namespace Task10.Services
     {
         private readonly Task10DbContext _db;
 
-        public GroupsDbService(Task10DbContext db) : base(db)
-        {
-            _db = db;
-        }
+        public GroupsDbService(Task10DbContext db) : base(db) => _db = db;
 
         public override async Task<Group> GetAsync(int id, CancellationToken cancel = default)
         {

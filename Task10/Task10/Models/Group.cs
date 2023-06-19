@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task10.Models.Base;
 
 namespace Task10.Models
@@ -15,11 +11,11 @@ namespace Task10.Models
         public int CourseId { get; set; }
 
         [ForeignKey(nameof(CourseId))]
-        public virtual Course Course { get; set;}
+        public virtual Course Course { get; set; }
 
         [Required]
         public int TeacherId { get; set; }
-        
+
         [ForeignKey(nameof(TeacherId))]
         public virtual Teacher Teacher { get; set; }
 
