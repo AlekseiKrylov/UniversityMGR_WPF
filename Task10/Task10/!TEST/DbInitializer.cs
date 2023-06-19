@@ -25,9 +25,9 @@ namespace Task10._TEST
             var timer = Stopwatch.StartNew();
             _logger.LogInformation("Database initialization...");
 
-            _logger.LogInformation("Deleting the Database...");
-            await _db.Database.EnsureDeletedAsync().ConfigureAwait(false);
-            _logger.LogInformation("Delete the Database completed in {0} ms", timer.ElapsedMilliseconds);
+            //_logger.LogInformation("Deleting the Database...");
+            //await _db.Database.EnsureDeletedAsync().ConfigureAwait(false);
+            //_logger.LogInformation("Delete the Database completed in {0} ms", timer.ElapsedMilliseconds);
 
             _logger.LogInformation("Database migration...");
             await _db.Database.MigrateAsync();
@@ -44,7 +44,7 @@ namespace Task10._TEST
             _logger.LogInformation("Database initialization completed in {0} s", timer.Elapsed.TotalSeconds);
         }
 
-        private const int _COURSES_COUNT = 10;
+        private const int _COURSES_COUNT = 4;
         private Course[] _courses;
         private async Task InitializeCoursesAsync()
         {
