@@ -30,9 +30,9 @@ namespace Task10
 
         public static IServiceCollection AddDbServices(this IServiceCollection services) => services
             .AddTransient<IDbService<Course>, CoursesDbService>()
-            .AddTransient<IDbService<Group>, DbServiceBase<Group>>()
+            .AddTransient<IDbService<Group>, GroupsDbService>()
             .AddTransient<IDbService<Student>, DbServiceBase<Student>>()
-            .AddTransient<IDbService<Teacher>, DbServiceBase<Teacher>>()
+            .AddTransient<IDbService<Teacher>, TeachersDbService>()
             ;
     }
 }

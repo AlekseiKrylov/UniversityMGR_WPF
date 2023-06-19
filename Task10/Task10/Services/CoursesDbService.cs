@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Task10.Data;
 using Task10.Models;
 using Task10.Services.Base;
@@ -23,7 +19,9 @@ namespace Task10.Services
 
         public override async Task<Course> GetAsync(int id, CancellationToken cancel = default)
         {
-            var course = await base.Items.Include(c => c.Groups).SingleOrDefaultAsync(c => c.Id == id, cancel);
+            var course = await base.Items.Include(c => c.Groups)
+                .SingleOrDefaultAsync(c => c.Id == id, cancel)
+                .ConfigureAwait(false);
 
             return course;
         }

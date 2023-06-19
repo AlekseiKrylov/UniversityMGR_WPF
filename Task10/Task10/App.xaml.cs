@@ -10,10 +10,7 @@ namespace Task10
     {
         public static IHost? AppHost { get; private set; }
 
-        public App()
-        {
-            AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
-        }
+        public App() => AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

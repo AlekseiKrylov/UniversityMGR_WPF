@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
-using Task10.Repository.Interfaces;
+using Task10.Services.Interfaces;
 using Task10.ViewModels.Base;
 
 namespace Task10.ViewModels
@@ -12,7 +12,6 @@ namespace Task10.ViewModels
     {
         private string _title = "University Application";
         private string _status = "OK";
-        private readonly IRepository<Course> _courseRepository;
 
         public string Title
         {
