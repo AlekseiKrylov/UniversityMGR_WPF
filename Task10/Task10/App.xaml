@@ -6,7 +6,13 @@
              xmlns:cmd="clr-namespace:Task10.Infrastructure.Commands"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
-        <vm:ViewModelLocator x:Key="vmLocator" />
-        <cmd:CloseAppCommand x:Key="CloseAppCommand" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/GridSplitters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <vm:ViewModelLocator x:Key="vmLocator" />
+            <cmd:CloseAppCommand x:Key="CloseAppCommand" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

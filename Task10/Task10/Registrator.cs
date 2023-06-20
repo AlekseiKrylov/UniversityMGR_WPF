@@ -16,6 +16,7 @@ namespace Task10
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
             .AddSingleton<MainWindowViewModel>()
+            .AddSingleton<CoursesViewModel>()
             ;
 
         public static IServiceCollection AddDatabase(this IServiceCollection services) => services

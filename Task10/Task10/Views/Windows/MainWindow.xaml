@@ -6,7 +6,7 @@
         xmlns:l="clr-namespace:Task10"
         xmlns:v="clr-namespace:Task10.Views"
         xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
-        DataContext="{Binding MainWindowViewModel, Source={StaticResource vmLocator}}"
+        DataContext="{Binding MainWindowVM, Source={StaticResource vmLocator}}"
         Title="{Binding Title}"
         Height="450" Width="800">
     <DockPanel>

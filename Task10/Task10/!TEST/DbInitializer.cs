@@ -76,7 +76,7 @@ namespace Task10._TEST
                 .Select(i => new Teacher
                 {
                     Name = $"Teacher {i}",
-                    Surname = $"Techer_surename {i}"
+                    Surname = $"Teacher_surname {i}"
                 })
                 .ToArray();
 
@@ -121,7 +121,7 @@ namespace Task10._TEST
                 .Select(i => new Student
                 {
                     Name = $"Student {i}",
-                    Surname = $"Student_surename {i}",
+                    Surname = $"Student_surname {i}",
                     Group = rnd.NextItem(_groups)
                 })
                 .ToArray();
