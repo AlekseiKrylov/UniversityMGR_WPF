@@ -5,6 +5,6 @@ namespace Task10.Infrastructure.Commands
 {
     internal class CloseAppCommand : CommandBase
     {
-        protected override void Execute(object? parameter) => Application.Current.Shutdown();
+        public override void Execute(object? parameter) => Application.Current.Shutdown();
     }
 }

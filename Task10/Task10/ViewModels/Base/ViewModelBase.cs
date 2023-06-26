@@ -7,7 +7,7 @@ namespace Task10.ViewModels.Base
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyCanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -18,7 +18,7 @@ namespace Task10.ViewModels.Base
                 return false;
 
             field = value;
-            OnPropertyCanged(propertyName);
+            OnPropertyChanged(propertyName);
             return true;
         }
     }

@@ -20,16 +20,54 @@
         <GroupBox Grid.Column="0" Header="Courses">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-            <Button Content="Load Courses" Command="{Binding LoadCoursesCommand}"/>
-                
-            <ListBox Grid.Row="1" ItemsSource="{Binding Courses}" DisplayMemberPath="Name"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Create"
+                            Command="{Binding CreateCourseCommand}"/>
+                    <Button Content="Delete"
+                            Command="{Binding DeleteCourseCommand}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={ RelativeSource AncestorType={ x:Type ListBox }}}"/>
+                </StackPanel>
+
+                <ListBox Grid.Row="1" ItemsSource="{Binding Courses}"
+                         DisplayMemberPath="Name"
+                         SelectedItem="{Binding SelectedCourse}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectCourseCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={ RelativeSource AncestorType={ x:Type ListBox }}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListBox>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Course details">
-            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Name: " FontWeight="Bold"/>
+                    <TextBlock Text="{Binding SelectedCourse.Name}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left">
+                    <TextBlock Text="Description:" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding SelectedCourse.Description}" TextWrapping="Wrap" Margin="10 0"/>
+                </StackPanel>
+                <!--<TextBlock Grid.Row="3" Text="{Binding SelectedCourse.Groups.Count}"/>-->
+                <!--<ListBox Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}"
+                         DisplayMemberPath="Name"/>-->
+                <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
+                    </DataGrid.Columns>
+                    
+                </DataGrid>
+            </Grid>
         </GroupBox>
         <GridSplitter/>
     </Grid>

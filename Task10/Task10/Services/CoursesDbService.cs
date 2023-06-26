@@ -16,7 +16,11 @@ namespace Task10.Services
 
         public override async Task<Course> GetAsync(int id, CancellationToken cancel = default)
         {
-            var course = await base.Items.Include(c => c.Groups)
+            //Thread.Sleep(3000);
+            //await Task.Delay(3000, cancel);
+            var course = await base.Items
+                .Include(c => c.Groups)
+                    .ThenInclude(g => g.Teacher)
                 .SingleOrDefaultAsync(c => c.Id == id, cancel)
                 .ConfigureAwait(false);
 

@@ -9,12 +9,9 @@ namespace Task10.Infrastructure.Commands
         private readonly Func<object, bool> _canExecute;
 
         public RelayCommand(Action execute, Func<bool> canExecute = null)
-            : this(
-                  execute: p => execute(),
-                  canExecute: (Func<object, bool>)(canExecute is null ? null : p => canExecute())
-                  )
+            : this(execute: p => execute(),
+                   canExecute: (Func<object, bool>)(canExecute is null ? null : p => canExecute()))
         {
-            
         }
 
         public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
@@ -26,6 +23,13 @@ namespace Task10.Infrastructure.Commands
         protected override bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
 
         protected override void Execute(object? parameter) => _execute(parameter);
+    }
 
+    internal class RelayCommand<T> : RelayCommand
+    {
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+            : base(p => execute((T)p), canExecute is null ? null : new Func<object, bool>(p => canExecute((T)p)))
+        {
+        }
     }
 }
