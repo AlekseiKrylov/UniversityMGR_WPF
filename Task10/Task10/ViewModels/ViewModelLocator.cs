@@ -11,5 +11,7 @@ namespace Task10.ViewModels
     {
         public MainWindowViewModel MainWindowVM => App.AppHost!.Services.GetRequiredService<MainWindowViewModel>();
         public CoursesViewModel CoursesVM => App.AppHost!.Services.GetRequiredService<CoursesViewModel>();
+        public GroupEditorViewModel GroupEditorVM => App.AppHost!.Services.GetRequiredService<GroupEditorViewModel>();
+        public CourseEditorViewModel CourseEditorVM => App.AppHost!.Services.GetRequiredService<CourseEditorViewModel>();
     }
 }

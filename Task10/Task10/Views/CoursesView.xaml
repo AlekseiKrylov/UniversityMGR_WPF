@@ -26,17 +26,21 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Create"
                             Command="{Binding CreateCourseCommand}"/>
+                    <Button Content="Edit"
+                            Command="{Binding EditCourseCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=courseList}"/>
                     <Button Content="Delete"
                             Command="{Binding DeleteCourseCommand}"
-                            CommandParameter="{Binding SelectedItem, RelativeSource={ RelativeSource AncestorType={ x:Type ListBox }}}"/>
+                            CommandParameter="{Binding SelectedItem, ElementName=courseList}"/>
                 </StackPanel>
 
-                <ListBox Grid.Row="1" ItemsSource="{Binding Courses}"
+                <ListBox x:Name="courseList" Grid.Row="1" ItemsSource="{Binding Courses}"
                          DisplayMemberPath="Name"
                          SelectedItem="{Binding SelectedCourse}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding SelectCourseCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={ RelativeSource AncestorType={ x:Type ListBox }}}"/>
+                            <i:InvokeCommandAction Command="{Binding SelectCourseCommand}"
+                                                   CommandParameter="{Binding SelectedItem, ElementName=courseList}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ListBox>
@@ -48,6 +52,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Name: " FontWeight="Bold"/>
@@ -57,16 +62,19 @@
                     <TextBlock Text="Description:" FontWeight="Bold"/>
                     <TextBlock Text="{Binding SelectedCourse.Description}" TextWrapping="Wrap" Margin="10 0"/>
                 </StackPanel>
-                <!--<TextBlock Grid.Row="3" Text="{Binding SelectedCourse.Groups.Count}"/>-->
-                <!--<ListBox Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}"
-                         DisplayMemberPath="Name"/>-->
-                <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}">
+                <DataGrid x:Name="groupGrid" Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
                     </DataGrid.Columns>
                     
                 </DataGrid>
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="Add"/>
+                    <Button Content="Edit"
+                            Command="{Binding EditGroupCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=groupGrid}"/>
+                </StackPanel>
             </Grid>
         </GroupBox>
         <GridSplitter/>

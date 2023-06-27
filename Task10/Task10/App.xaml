@@ -13,8 +13,11 @@
                 <ResourceDictionary Source="Resources/Styles/Button.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
-            <vm:ViewModelLocator x:Key="vmLocator" />
-            <cmd:CloseAppCommand x:Key="CloseAppCommand" />
+            <vm:ViewModelLocator x:Key="vmLocator"/>
+            <cmd:CloseAppCommand x:Key="CloseAppCommand"/>
+            <cmd:CloseWindowCommand x:Key="CloseWindowCommand"/>
+            <cmd:CloseDialogCommand x:Key="ConfirmDialogCommand" DialogResult="True"/>
+            <cmd:CloseDialogCommand x:Key="CancelDialogCommand" DialogResult="False"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
