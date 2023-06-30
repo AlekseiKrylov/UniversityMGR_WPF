@@ -16,6 +16,9 @@ namespace Task10
     {
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
             .AddSingleton<MainWindowViewModel>()
+            .AddTransient<CoursesViewModel>()
+            .AddTransient<GroupEditorViewModel>()
+            .AddTransient<CourseEditorViewModel>()
             ;
 
         public static IServiceCollection AddDatabase(this IServiceCollection services) => services
@@ -33,6 +36,7 @@ namespace Task10
             .AddTransient<IDbService<Group>, GroupsDbService>()
             .AddTransient<IDbService<Student>, DbServiceBase<Student>>()
             .AddTransient<IDbService<Teacher>, TeachersDbService>()
+            .AddTransient<IUserDialogService, WindowsUserDialogService>()
             ;
     }
 }

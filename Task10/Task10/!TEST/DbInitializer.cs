@@ -44,7 +44,7 @@ namespace Task10._TEST
             _logger.LogInformation("Database initialization completed in {0} s", timer.Elapsed.TotalSeconds);
         }
 
-        private const int _COURSES_COUNT = 4;
+        private const int _COURSES_COUNT = 5;
         private Course[] _courses;
         private async Task InitializeCoursesAsync()
         {
@@ -76,7 +76,7 @@ namespace Task10._TEST
                 .Select(i => new Teacher
                 {
                     Name = $"Teacher {i}",
-                    Surname = $"Techer_surename {i}"
+                    Surname = $"Teacher_surname {i}"
                 })
                 .ToArray();
 
@@ -86,7 +86,7 @@ namespace Task10._TEST
             _logger.LogInformation("Teachers initialization completed in {0} ms", timer.ElapsedMilliseconds);
         }
 
-        private const int _GROUPS_COUNT = 7;
+        private const int _GROUPS_COUNT = 25;
         private Group[] _groups;
         private async Task InitializeGroupsAsync()
         {
@@ -121,7 +121,7 @@ namespace Task10._TEST
                 .Select(i => new Student
                 {
                     Name = $"Student {i}",
-                    Surname = $"Student_surename {i}",
+                    Surname = $"Student_surname {i}",
                     Group = rnd.NextItem(_groups)
                 })
                 .ToArray();

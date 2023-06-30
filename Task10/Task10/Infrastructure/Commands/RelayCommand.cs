@@ -5,27 +5,59 @@ namespace Task10.Infrastructure.Commands
 {
     internal class RelayCommand : CommandBase
     {
-        private readonly Action<object> _execute;
-        private readonly Func<object, bool> _canExecute;
+        private readonly Delegate? _execute;
+        private readonly Delegate? _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
-            : this(
-                  execute: p => execute(),
-                  canExecute: (Func<object, bool>)(canExecute is null ? null : p => canExecute())
-                  )
+        public RelayCommand(Action<object?> execute, Func<bool>? canExecute = null)
         {
-            
-        }
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _execute = execute;
             _canExecute = canExecute;
         }
 
-        protected override bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
+        public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
 
-        protected override void Execute(object? parameter) => _execute(parameter);
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
 
+        public RelayCommand(Action execute, Func<object?, bool>? canExecute)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        protected override bool CanExecute(object? parameter)
+        {
+            if (!base.CanExecute(parameter))
+                return false;
+
+            return _canExecute switch
+            {
+                null => true,
+                Func<bool> canExec => canExec(),
+                Func<object?, bool> canExec => canExec(parameter),
+                _ => throw new NotSupportedException($"Delegate of type {_canExecute.GetType()} is not supported by command")
+            };
+        }
+
+        protected override void Execute(object? parameter)
+        {
+            switch (_execute)
+            {
+                default: throw new NotSupportedException($"Delegate of type {_execute.GetType()} is not supported by command");
+                case null: throw new InvalidOperationException($"Delegate 'execute' is not passed");
+
+                case Action execute: execute();
+                    break;
+                case Action<object?> execute: execute(parameter);
+                    break;
+            }
+        }
     }
 }

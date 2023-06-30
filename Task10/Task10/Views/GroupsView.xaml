@@ -10,12 +10,12 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <GridSplitter Width="3" Background="Transparent" Panel.ZIndex="1000"/>
         <GroupBox Grid.Column="0" Header="Groups">
             <ListBox/>
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Group details">
 
         </GroupBox>
+        <GridSplitter/>
     </Grid>
 </UserControl>
