@@ -11,8 +11,16 @@ namespace Task10.Infrastructure.Commands.Base
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public virtual bool CanExecute(object parameter) => true;
+        bool ICommand.CanExecute(object? parameter) => CanExecute(parameter);
 
-        public abstract void Execute(object parameter);
+        void ICommand.Execute(object? parameter)
+        {
+            if(CanExecute(parameter))
+                Execute(parameter);
+        }
+
+        protected virtual bool CanExecute(object? parameter) => true;
+
+        protected abstract void Execute(object? parameter);
     }
 }

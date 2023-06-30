@@ -1,10 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using Task10.Infrastructure.Commands;
-using Task10.Models;
-using Task10.Services.Interfaces;
-using Task10.ViewModels.Base;
+﻿using Task10.ViewModels.Base;
 
 namespace Task10.ViewModels
 {

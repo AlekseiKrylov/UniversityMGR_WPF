@@ -67,12 +67,22 @@
                         <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
                     </DataGrid.Columns>
-                    
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectGroupCommand}"
+                                                   CommandParameter="{Binding SelectedItem, ElementName=groupGrid}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </DataGrid>
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Content="Add"/>
+                    <Button Content="Add"
+                            Command="{Binding CreateGroupCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=courseList}"/>
                     <Button Content="Edit"
                             Command="{Binding EditGroupCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=groupGrid}"/>
+                    <Button Content="Delete"
+                            Command="{Binding DeleteGroupCommand}"
                             CommandParameter="{Binding SelectedItem, ElementName=groupGrid}"/>
                 </StackPanel>
             </Grid>

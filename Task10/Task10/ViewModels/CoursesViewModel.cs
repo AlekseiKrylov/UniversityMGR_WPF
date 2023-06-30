@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
-using Task10.Infrastructure.Commands.Base;
 using Task10.Models;
 using Task10.Services.Interfaces;
 using Task10.ViewModels.Base;
@@ -17,32 +14,40 @@ namespace Task10.ViewModels
     internal class CoursesViewModel : ViewModelBase
     {
         private readonly IDbService<Course> _dbCourseService;
+        private readonly IDbService<Group> _dbGroupService;
         private readonly IUserDialogService _userDialogService;
-        private ObservableCollection<Course> _courses;
-        private Course _selectedCourse;
+        private ObservableCollection<Course>? _courses;
+        private Course? _selectedCourse;
+        private Group? _selectedGroup;
 
-        public ObservableCollection<Course> Courses
+        public ObservableCollection<Course>? Courses
         {
             get { return _courses; }
             private set { SetProperty(ref _courses, value); }
         }
 
-        public Course SelectedCourse
+        public Course? SelectedCourse
         {
             get { return _selectedCourse; }
             set { SetProperty(ref _selectedCourse, value); }
         }
 
+        public Group? SelectedGroup
+        {
+            get { return _selectedGroup; }
+            set { SetProperty(ref _selectedGroup, value); }
+        }
+
+        #region Curse commands
+
         #region LoadCoursesCommand
 
-        private ICommand _loadCoursesCommand;
+        private RelayCommand? _loadCoursesCommand;
 
         public ICommand LoadCoursesCommand => _loadCoursesCommand
-            ??= new RelayCommand(OnLoadCoursesCommandExecuted, CanLoadCoursesCommandExecute);
+            ??= new(OnLoadCoursesCommandExecuted);
 
-        private bool CanLoadCoursesCommandExecute(object p) => true;
-
-        private void OnLoadCoursesCommandExecuted(object p)
+        private void OnLoadCoursesCommandExecuted()
         {
             List<Course> courses = _dbCourseService.Items.ToList();
             Courses = new ObservableCollection<Course>(courses);
@@ -52,15 +57,16 @@ namespace Task10.ViewModels
 
         #region SelectCourseCommand
 
-        private ICommand _selectCourseCommand;
+        private RelayCommand? _selectCourseCommand;
 
         public ICommand SelectCourseCommand => _selectCourseCommand
-            ??= new RelayCommand(ExecuteSelectCourseCommand);
+            ??= new(OnSelectCourseCommandExecuted, p => p is not null);
 
-        private async void ExecuteSelectCourseCommand(object p)
+        private async void OnSelectCourseCommandExecuted(object? p)
         {
-            var selectedCourse = (Course)p;
-            SelectedCourse = await _dbCourseService.GetAsync(selectedCourse.Id) ;
+            SelectedGroup = null;
+            var selectedCourse = (Course)p!;
+            SelectedCourse = await _dbCourseService.GetAsync(selectedCourse.Id);
             OnPropertyChanged(nameof(SelectedCourse));
         }
 
@@ -68,128 +74,176 @@ namespace Task10.ViewModels
 
         #region CreateCourseCommand
 
-        private ICommand _createCourseCommand;
+        private ICommand? _createCourseCommand;
         public ICommand CreateCourseCommand => _createCourseCommand
-            ??= new RelayCommand(ExecuteCreateCourseCommand);
+            ??= new RelayCommand(OnCreateCourseCommandExecuted);
 
-        private void ExecuteCreateCourseCommand(object p)
+        private async void OnCreateCourseCommandExecuted(object? p)
         {
-            CourseEditorViewModel viewModel = new(_dbCourseService);
-            viewModel.Course = new();
-
-            CourseEditorWindow editorWindow = new();
-            editorWindow.DataContext = viewModel;
-            editorWindow.Show();
+            var newCourse = new Course();
+            
+            if (_userDialogService.AddEdit(newCourse))
+                await _dbCourseService.AddAsync(newCourse);
         }
-
 
         #endregion
 
-        #region OpenCourseEditorCommand
+        #region EditCourseCommand
 
-        private ICommand _openCourseEditorCommand;
-        public ICommand OpenCourseEditorCommand => _openCourseEditorCommand
-            ??= new RelayCommand(ExecuteOpenCourseEditorCommand, CanExecuteOpenCourseEditorCommand);
+        private ICommand? _editCourseCommand;
+        public ICommand EditCourseCommand => _editCourseCommand
+            ??= new RelayCommand(OnEditCourseCommandExecuted, CanEditCourseCommandExecute);
 
-        private bool CanExecuteOpenCourseEditorCommand(object p) => !(p is null || p is not Course);
+        private bool CanEditCourseCommandExecute(object? p) => !(p is null || p is not Course);
 
-        private void ExecuteOpenCourseEditorCommand(object p)
+        private async void OnEditCourseCommandExecuted(object? p)
         {
-            CourseEditorViewModel viewModel = new(_dbCourseService);
-            viewModel.Course = (Course)p;
-
-            CourseEditorWindow editorWindow = new();
-            editorWindow.DataContext = viewModel;
-            editorWindow.Show();
+            if (_userDialogService.AddEdit(p!))
+            {
+                await _dbCourseService.UpdateAsync((Course)p!);
+                _userDialogService.ShowInformation("Course edited", "Information");
+            }
+            else
+                _userDialogService.ShowWarning("Editing rejection", "Warning");
         }
 
+        #endregion
+        
+        #region DeleteCourseCommand
+
+        private ICommand? _deleteCourseCommand;
+        public ICommand DeleteCourseCommand => _deleteCourseCommand
+            ??= new RelayCommand(OnDeleteCourseCommandExecuted, CanDeleteCourseCommandExecute);
+
+        private bool CanDeleteCourseCommandExecute(object? p) => !(p is null || p is not Course);
+
+        private async void OnDeleteCourseCommandExecuted(object? p)
+        {
+            var course = (Course)p!;
+            string confirmMessage = $"Are you sure you want to delete course '{course.Name}'?";
+            string warningMessage = "You cannot delete a course with groups";
+            string caption = "Delete course";
+
+            if (course.Groups!.Count > 0)
+            {
+                _userDialogService.ShowWarning(warningMessage, caption);
+                return;
+            }
+            
+            if (!_userDialogService.Confirm(confirmMessage, caption))
+                return;
+            
+            await _dbCourseService.RemoveAsync(course.Id);
+            SelectedCourse = null;
+        }
+
+        #endregion
+        
+        #endregion
+
+        #region Group commands
+
+        #region SelectGroupCommand
+
+        private RelayCommand? _selectGroupCommand;
+
+        public ICommand SelectGroupCommand => _selectGroupCommand
+            ??= new(OnSelectGroupCommandExecuted, p => p is not null);
+
+        private async void OnSelectGroupCommandExecuted(object? p)
+        {
+            var selectedGroup = (Group)p!;
+            SelectedGroup = await _dbGroupService.GetAsync(selectedGroup.Id);
+            OnPropertyChanged(nameof(SelectedGroup));
+        }
+
+        #endregion
+
+        #region CreateGroupCommand
+
+        private ICommand? _createGroupCommand;
+        public ICommand CreateGroupCommand => _createGroupCommand
+            ??= new RelayCommand(ExecuteCreateGroupCommand, CanExecuteCreateGroupCommand);
+
+        private bool CanExecuteCreateGroupCommand(object? p) => !(p is null || p is not Course);
+
+        private async void ExecuteCreateGroupCommand(object? p)
+        {
+            var course = (Course)p!;
+            var newGroup = new Group();
+            newGroup.Course = course;
+
+            if (_userDialogService.AddEdit(newGroup))
+                await _dbGroupService.AddAsync(newGroup);
+        }
 
         #endregion
 
         #region EditGroupCommand
 
-        private ICommand _editGroupCommand;
+        private ICommand? _editGroupCommand;
         public ICommand EditGroupCommand => _editGroupCommand
-            ??= new RelayCommand(ExecuteEditGroupCommand, CanExecuteEditGroupCommand);
+            ??= new RelayCommand(OnEditGroupCommandExecuted, CanEditGroupCommandExecute);
 
-        private bool CanExecuteEditGroupCommand(object p) => !(p is null || p is not Group);
+        private bool CanEditGroupCommandExecute(object? p) => !(p is null || p is not Group);
 
-        private void ExecuteEditGroupCommand(object p)
+        private async void OnEditGroupCommandExecuted(object? p)
         {
-            var selectedGroup = (Group)p;
-
-            GroupEditorViewModel groupEditorViewModel = new GroupEditorViewModel();
-
-            groupEditorViewModel.Group = selectedGroup;
-
-            var dialog = new GroupEditorWindow();
-            //dialog.ShowDialog();
-
-            if (dialog.ShowDialog() == true)
-                MessageBox.Show("Button OK");
-            else
-                MessageBox.Show("Button cancel");
+            if (_userDialogService.AddEdit(p!))
+                await _dbGroupService.UpdateAsync((Group)p!);
         }
 
         #endregion
 
-        #region EditGroupCommand TEST!!!!
+        #region DeleteGroupCommand
 
-        private ICommand _editCourseCommand;
-        public ICommand EditCourseCommand => _editCourseCommand
-            ??= new RelayCommand(ExecuteEditCourseCommand, CanExecuteEditCourseCommand);
+        private ICommand? _deleteGroupCommand;
+        public ICommand DeleteGroupCommand => _deleteGroupCommand
+            ??= new RelayCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
 
-        private bool CanExecuteEditCourseCommand(object p) => !(p is null || p is not Course);
+        private bool CanDeleteGroupCommandExecute(object? p) => !(p is null || p is not Group);
 
-        private void ExecuteEditCourseCommand(object p)
+        private async void OnDeleteGroupCommandExecuted(object? p)
         {
-            if (_userDialogService.Edit(p))
+            var group = (Group)p!;
+            string confirmMessage = $"Are you sure you want to delete Group '{group.Name}'?";
+            string warningMessage = "You cannot delete a Group with students";
+            string caption = "Delete Group";
+            
+            if (group.Students!.Count > 0)
             {
-                _dbCourseService.UpdateAsync((Course)p);
-                _userDialogService.ShowInformation("Course edited", "Information");
+                _userDialogService.ShowWarning(warningMessage, caption);
+                return;
             }
 
-            _userDialogService.ShowWarning("Editing rejection", "Warning");
+            if (!_userDialogService.Confirm(confirmMessage, caption))
+                return;
+
+            await _dbGroupService.RemoveAsync(group.Id);
         }
 
         #endregion
 
-        #region CreateNewGroupCommand
-
-        private ICommand _createNewGroupCommand;
-        public ICommand CreateNewGroupCommand => _createNewGroupCommand
-            ??= new RelayCommand(ExecuteCreateNewGroupCommand, CanExecuteCreateNewGroupCommand);
-
-        private bool CanExecuteCreateNewGroupCommand(object p) => p is Course;
-
-        private void ExecuteCreateNewGroupCommand(object p)
-        {
-            var course = (Course)p;
-
-        }
+        #region ImportStudentsFromFileCommand !!!TO DO!!!
 
         #endregion
 
-        #region DeleteCourseCommand
-
-        private ICommand _deleteCourseCommand;
-        public ICommand DeleteCourseCommand => _deleteCourseCommand
-            ??= new RelayCommand(ExecuteDeleteCourseCommand, CanExecuteDeleteCourseCommand);
-
-        private bool CanExecuteDeleteCourseCommand(object p) => !(p is null || p is not Course);
-
-        private void ExecuteDeleteCourseCommand(object p)
-        {
-            var course = (Course)p;
-            _dbCourseService.RemoveAsync(course.Id);
-        }
+        #region ExportStudentsToFileCommand !!!TO DO!!!
 
         #endregion
 
+        #region ExportGroupDetails !!!TO DO!!!
 
-        public CoursesViewModel(IDbService<Course> dbCourseService, IUserDialogService userDialogService)
+        #endregion
+
+        #endregion
+
+        public CoursesViewModel(IUserDialogService userDialogService,
+            IDbService<Course> dbCourseService,
+            IDbService<Group> dbGroupService)
         {
             _dbCourseService = dbCourseService;
+            _dbGroupService = dbGroupService;
             _userDialogService = userDialogService;
         }
     }
