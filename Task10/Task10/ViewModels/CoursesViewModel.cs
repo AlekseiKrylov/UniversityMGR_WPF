@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
 using Task10.Services.Interfaces;
 using Task10.ViewModels.Base;
-using Task10.Views.Windows;
 
 namespace Task10.ViewModels
 {
@@ -17,6 +18,7 @@ namespace Task10.ViewModels
         private readonly IDbService<Group> _dbGroupService;
         private readonly IUserDialogService _userDialogService;
         private ObservableCollection<Course>? _courses;
+        private ObservableCollection<Group>? _groups;
         private Course? _selectedCourse;
         private Group? _selectedGroup;
 
@@ -24,6 +26,12 @@ namespace Task10.ViewModels
         {
             get { return _courses; }
             private set { SetProperty(ref _courses, value); }
+        }
+
+        public ObservableCollection<Group>? Groups
+        {
+            get { return _groups; }
+            private set { SetProperty(ref _groups, value); }
         }
 
         public Course? SelectedCourse
@@ -38,6 +46,15 @@ namespace Task10.ViewModels
             set { SetProperty(ref _selectedGroup, value); }
         }
 
+        public CoursesViewModel(IUserDialogService userDialogService,
+            IDbService<Course> dbCourseService,
+            IDbService<Group> dbGroupService)
+        {
+            _dbCourseService = dbCourseService;
+            _dbGroupService = dbGroupService;
+            _userDialogService = userDialogService;
+        }
+
         #region Curse commands
 
         #region LoadCoursesCommand
@@ -49,8 +66,7 @@ namespace Task10.ViewModels
 
         private void OnLoadCoursesCommandExecuted()
         {
-            List<Course> courses = _dbCourseService.Items.ToList();
-            Courses = new ObservableCollection<Course>(courses);
+            UpdateCourseList();
         }
 
         #endregion
@@ -66,8 +82,7 @@ namespace Task10.ViewModels
         {
             SelectedGroup = null;
             var selectedCourse = (Course)p!;
-            SelectedCourse = await _dbCourseService.GetAsync(selectedCourse.Id);
-            OnPropertyChanged(nameof(SelectedCourse));
+            await UpdateSelectedCourse(selectedCourse.Id);
         }
 
         #endregion
@@ -81,9 +96,11 @@ namespace Task10.ViewModels
         private async void OnCreateCourseCommandExecuted(object? p)
         {
             var newCourse = new Course();
-            
+
             if (_userDialogService.AddEdit(newCourse))
                 await _dbCourseService.AddAsync(newCourse);
+
+            UpdateCourseList();
         }
 
         #endregion
@@ -99,16 +116,14 @@ namespace Task10.ViewModels
         private async void OnEditCourseCommandExecuted(object? p)
         {
             if (_userDialogService.AddEdit(p!))
-            {
                 await _dbCourseService.UpdateAsync((Course)p!);
-                _userDialogService.ShowInformation("Course edited", "Information");
-            }
-            else
-                _userDialogService.ShowWarning("Editing rejection", "Warning");
+
+            UpdateCourseList();
+            OnPropertyChanged(nameof(SelectedCourse));
         }
 
         #endregion
-        
+
         #region DeleteCourseCommand
 
         private ICommand? _deleteCourseCommand;
@@ -129,16 +144,17 @@ namespace Task10.ViewModels
                 _userDialogService.ShowWarning(warningMessage, caption);
                 return;
             }
-            
+
             if (!_userDialogService.Confirm(confirmMessage, caption))
                 return;
-            
+
             await _dbCourseService.RemoveAsync(course.Id);
+            UpdateCourseList();
             SelectedCourse = null;
         }
 
         #endregion
-        
+
         #endregion
 
         #region Group commands
@@ -154,7 +170,6 @@ namespace Task10.ViewModels
         {
             var selectedGroup = (Group)p!;
             SelectedGroup = await _dbGroupService.GetAsync(selectedGroup.Id);
-            OnPropertyChanged(nameof(SelectedGroup));
         }
 
         #endregion
@@ -175,6 +190,8 @@ namespace Task10.ViewModels
 
             if (_userDialogService.AddEdit(newGroup))
                 await _dbGroupService.AddAsync(newGroup);
+
+            await UpdateSelectedCourse(course.Id);
         }
 
         #endregion
@@ -191,6 +208,8 @@ namespace Task10.ViewModels
         {
             if (_userDialogService.AddEdit(p!))
                 await _dbGroupService.UpdateAsync((Group)p!);
+
+            await UpdateSelectedCourse(((Group)p!).CourseId);
         }
 
         #endregion
@@ -209,7 +228,7 @@ namespace Task10.ViewModels
             string confirmMessage = $"Are you sure you want to delete Group '{group.Name}'?";
             string warningMessage = "You cannot delete a Group with students";
             string caption = "Delete Group";
-            
+
             if (group.Students!.Count > 0)
             {
                 _userDialogService.ShowWarning(warningMessage, caption);
@@ -220,6 +239,8 @@ namespace Task10.ViewModels
                 return;
 
             await _dbGroupService.RemoveAsync(group.Id);
+            
+            await UpdateSelectedCourse(group.CourseId);
         }
 
         #endregion
@@ -238,13 +259,16 @@ namespace Task10.ViewModels
 
         #endregion
 
-        public CoursesViewModel(IUserDialogService userDialogService,
-            IDbService<Course> dbCourseService,
-            IDbService<Group> dbGroupService)
+        private void UpdateCourseList()
         {
-            _dbCourseService = dbCourseService;
-            _dbGroupService = dbGroupService;
-            _userDialogService = userDialogService;
+            List<Course> courses = _dbCourseService.Items.ToList();
+            Courses = new ObservableCollection<Course>(courses);
+        }
+
+        private async Task UpdateSelectedCourse(int id)
+        {
+            SelectedCourse = await _dbCourseService.GetAsync(id);
+            Groups = new ObservableCollection<Group>(SelectedCourse.Groups!);
         }
     }
 }

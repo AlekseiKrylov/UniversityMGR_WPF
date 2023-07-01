@@ -62,7 +62,7 @@
                     <TextBlock Text="Description:" FontWeight="Bold"/>
                     <TextBlock Text="{Binding SelectedCourse.Description}" TextWrapping="Wrap" Margin="10 0"/>
                 </StackPanel>
-                <DataGrid x:Name="groupGrid" Grid.Row="2" ItemsSource="{Binding SelectedCourse.Groups}">
+                <DataGrid x:Name="groupGrid" Grid.Row="2" Margin="0 3 0 0" ItemsSource="{Binding Groups}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
