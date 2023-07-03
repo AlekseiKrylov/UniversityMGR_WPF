@@ -9,6 +9,6 @@ namespace Task10.Models
         [MaxLength(1000)]
         public string? Description { get; set; }
 
-        public virtual ICollection<Group>? Groups { get; set; }
+        public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
     }
 }

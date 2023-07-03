@@ -16,6 +16,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="Courses">
             <Grid>
@@ -62,7 +63,12 @@
                     <TextBlock Text="Description:" FontWeight="Bold"/>
                     <TextBlock Text="{Binding SelectedCourse.Description}" TextWrapping="Wrap" Margin="10 0"/>
                 </StackPanel>
-                <DataGrid x:Name="groupGrid" Grid.Row="2" Margin="0 3 0 0" ItemsSource="{Binding Groups}">
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                <DataGrid x:Name="groupGrid" Grid.Column="0" Margin="0 3 3 0" ItemsSource="{Binding Groups}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
@@ -74,6 +80,23 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DataGrid>
+                    <GroupBox Header="Students" Grid.Column="1">
+                        <GroupBox.Style>
+                            <Style TargetType="GroupBox">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsGroupSelected}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GroupBox.Style>
+                        <ListBox x:Name="studentsList" ItemsSource="{Binding Students}"
+                                 DisplayMemberPath="FullName" MinWidth="200">
+                            
+                        </ListBox>
+                    </GroupBox>
+                </Grid>
                 <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Content="Add"
                             Command="{Binding CreateGroupCommand}"
@@ -87,6 +110,7 @@
                 </StackPanel>
             </Grid>
         </GroupBox>
+        
         <GridSplitter/>
     </Grid>
 </UserControl>

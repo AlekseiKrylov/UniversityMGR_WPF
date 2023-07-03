@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
@@ -19,6 +17,7 @@ namespace Task10.ViewModels
         private readonly IUserDialogService _userDialogService;
         private ObservableCollection<Course>? _courses;
         private ObservableCollection<Group>? _groups;
+        private ObservableCollection<Student>? _students;
         private Course? _selectedCourse;
         private Group? _selectedGroup;
 
@@ -34,6 +33,12 @@ namespace Task10.ViewModels
             private set { SetProperty(ref _groups, value); }
         }
 
+        public ObservableCollection<Student>? Students
+        {
+            get { return _students; }
+            private set { SetProperty(ref _students, value); }
+        }
+
         public Course? SelectedCourse
         {
             get { return _selectedCourse; }
@@ -44,6 +49,13 @@ namespace Task10.ViewModels
         {
             get { return _selectedGroup; }
             set { SetProperty(ref _selectedGroup, value); }
+        }
+
+        private bool isGroupSelected;
+        public bool IsGroupSelected
+        {
+            get { return isGroupSelected; }
+            set { SetProperty(ref isGroupSelected, value); }
         }
 
         public CoursesViewModel(IUserDialogService userDialogService,
@@ -81,6 +93,7 @@ namespace Task10.ViewModels
         private async void OnSelectCourseCommandExecuted(object? p)
         {
             SelectedGroup = null;
+            IsGroupSelected = SelectedGroup is not null;
             var selectedCourse = (Course)p!;
             await UpdateSelectedCourse(selectedCourse.Id);
         }
@@ -101,6 +114,7 @@ namespace Task10.ViewModels
                 await _dbCourseService.AddAsync(newCourse);
 
             UpdateCourseList();
+            SelectedCourse = newCourse;
         }
 
         #endregion
@@ -170,6 +184,10 @@ namespace Task10.ViewModels
         {
             var selectedGroup = (Group)p!;
             SelectedGroup = await _dbGroupService.GetAsync(selectedGroup.Id);
+
+            Students = new ObservableCollection<Student>(SelectedGroup.Students);
+
+            IsGroupSelected = SelectedGroup is not null;
         }
 
         #endregion
@@ -239,7 +257,7 @@ namespace Task10.ViewModels
                 return;
 
             await _dbGroupService.RemoveAsync(group.Id);
-            
+
             await UpdateSelectedCourse(group.CourseId);
         }
 

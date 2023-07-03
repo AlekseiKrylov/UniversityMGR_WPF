@@ -19,6 +19,6 @@ namespace Task10.Models
         [ForeignKey(nameof(TeacherId))]
         public virtual Teacher Teacher { get; set; }
 
-        public virtual ICollection<Student>? Students { get; set; }
+        public virtual ICollection<Student> Students { get; set; } = new List<Student>();
     }
 }
