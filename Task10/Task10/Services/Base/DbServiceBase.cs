@@ -23,7 +23,7 @@ namespace Task10.Services.Base
 
         public virtual IQueryable<T> Items => _dbSet;
 
-        public virtual async Task<T> GetAsync(int id, CancellationToken cancel = default)
+        public virtual async Task<T> GetDetailAsync(int id, CancellationToken cancel = default)
         {
             T? item = await Items
                         .SingleOrDefaultAsync(item => item.Id == id, cancel)
@@ -54,7 +54,7 @@ namespace Task10.Services.Base
 
         public virtual async Task RemoveAsync(int id, CancellationToken cancel = default)
         {
-            var item = await GetAsync(id, cancel);
+            var item = await GetDetailAsync(id, cancel);
             if (item is null)
                 throw new InvalidOperationException($"Exeption! The {item} with ID={id} was not found in the context.");
 

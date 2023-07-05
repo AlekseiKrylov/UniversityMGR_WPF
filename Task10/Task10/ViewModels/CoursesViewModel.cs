@@ -23,39 +23,32 @@ namespace Task10.ViewModels
 
         public ObservableCollection<Course>? Courses
         {
-            get { return _courses; }
-            private set { SetProperty(ref _courses, value); }
+            get => _courses;
+            private set => SetProperty(ref _courses, value);
         }
 
         public ObservableCollection<Group>? Groups
         {
-            get { return _groups; }
-            private set { SetProperty(ref _groups, value); }
+            get => _groups;
+            private set => SetProperty(ref _groups, value);
         }
 
         public ObservableCollection<Student>? Students
         {
-            get { return _students; }
-            private set { SetProperty(ref _students, value); }
+            get => _students;
+            private set => SetProperty(ref _students, value);
         }
 
         public Course? SelectedCourse
         {
-            get { return _selectedCourse; }
-            set { SetProperty(ref _selectedCourse, value); }
+            get => _selectedCourse;
+            set => SetProperty(ref _selectedCourse, value);
         }
 
         public Group? SelectedGroup
         {
-            get { return _selectedGroup; }
-            set { SetProperty(ref _selectedGroup, value); }
-        }
-
-        private bool isGroupSelected;
-        public bool IsGroupSelected
-        {
-            get { return isGroupSelected; }
-            set { SetProperty(ref isGroupSelected, value); }
+            get => _selectedGroup;
+            set => SetProperty(ref _selectedGroup, value);
         }
 
         public CoursesViewModel(IUserDialogService userDialogService,
@@ -76,10 +69,7 @@ namespace Task10.ViewModels
         public ICommand LoadCoursesCommand => _loadCoursesCommand
             ??= new(OnLoadCoursesCommandExecuted);
 
-        private void OnLoadCoursesCommandExecuted()
-        {
-            UpdateCourseList();
-        }
+        private void OnLoadCoursesCommandExecuted() => UpdateCourseList();
 
         #endregion
 
@@ -88,12 +78,13 @@ namespace Task10.ViewModels
         private RelayCommand? _selectCourseCommand;
 
         public ICommand SelectCourseCommand => _selectCourseCommand
-            ??= new(OnSelectCourseCommandExecuted, p => p is not null);
+            ??= new(OnSelectCourseCommandExecuted, CanSelectCourseCommandExecute);
+
+        private bool CanSelectCourseCommandExecute(object? p) => !(p is null || p is not Course);
 
         private async void OnSelectCourseCommandExecuted(object? p)
         {
             SelectedGroup = null;
-            IsGroupSelected = SelectedGroup is not null;
             var selectedCourse = (Course)p!;
             await UpdateSelectedCourse(selectedCourse.Id);
         }
@@ -103,6 +94,7 @@ namespace Task10.ViewModels
         #region CreateCourseCommand
 
         private ICommand? _createCourseCommand;
+        
         public ICommand CreateCourseCommand => _createCourseCommand
             ??= new RelayCommand(OnCreateCourseCommandExecuted);
 
@@ -149,11 +141,12 @@ namespace Task10.ViewModels
         private async void OnDeleteCourseCommandExecuted(object? p)
         {
             var course = (Course)p!;
-            string confirmMessage = $"Are you sure you want to delete course '{course.Name}'?";
+            Course deleteCourse = await _dbCourseService.GetDetailAsync(course.Id);
+            string confirmMessage = $"Are you sure you want to delete course '{deleteCourse.Name}'?";
             string warningMessage = "You cannot delete a course with groups";
             string caption = "Delete course";
 
-            if (course.Groups!.Count > 0)
+            if (deleteCourse.Groups!.Count > 0)
             {
                 _userDialogService.ShowWarning(warningMessage, caption);
                 return;
@@ -162,7 +155,7 @@ namespace Task10.ViewModels
             if (!_userDialogService.Confirm(confirmMessage, caption))
                 return;
 
-            await _dbCourseService.RemoveAsync(course.Id);
+            await _dbCourseService.RemoveAsync(deleteCourse.Id);
             UpdateCourseList();
             SelectedCourse = null;
         }
@@ -178,16 +171,17 @@ namespace Task10.ViewModels
         private RelayCommand? _selectGroupCommand;
 
         public ICommand SelectGroupCommand => _selectGroupCommand
-            ??= new(OnSelectGroupCommandExecuted, p => p is not null);
+            ??= new(OnSelectGroupCommandExecuted, CanSelectGroupCommandExecute);
+
+        private bool CanSelectGroupCommandExecute(object? p) => !(p is null || p is not Group);
 
         private async void OnSelectGroupCommandExecuted(object? p)
         {
             var selectedGroup = (Group)p!;
-            SelectedGroup = await _dbGroupService.GetAsync(selectedGroup.Id);
+         
+            SelectedGroup = await _dbGroupService.GetDetailAsync(selectedGroup.Id);
 
             Students = new ObservableCollection<Student>(SelectedGroup.Students);
-
-            IsGroupSelected = SelectedGroup is not null;
         }
 
         #endregion
@@ -203,8 +197,7 @@ namespace Task10.ViewModels
         private async void ExecuteCreateGroupCommand(object? p)
         {
             var course = (Course)p!;
-            var newGroup = new Group();
-            newGroup.Course = course;
+            var newGroup = new Group { Course = course };
 
             if (_userDialogService.AddEdit(newGroup))
                 await _dbGroupService.AddAsync(newGroup);
@@ -243,11 +236,12 @@ namespace Task10.ViewModels
         private async void OnDeleteGroupCommandExecuted(object? p)
         {
             var group = (Group)p!;
-            string confirmMessage = $"Are you sure you want to delete Group '{group.Name}'?";
+            Group deleteGroup = await _dbGroupService.GetDetailAsync(group.Id);
+            string confirmMessage = $"Are you sure you want to delete Group '{deleteGroup.Name}'?";
             string warningMessage = "You cannot delete a Group with students";
             string caption = "Delete Group";
 
-            if (group.Students!.Count > 0)
+            if (deleteGroup.Students!.Count > 0)
             {
                 _userDialogService.ShowWarning(warningMessage, caption);
                 return;
@@ -256,9 +250,9 @@ namespace Task10.ViewModels
             if (!_userDialogService.Confirm(confirmMessage, caption))
                 return;
 
-            await _dbGroupService.RemoveAsync(group.Id);
+            await _dbGroupService.RemoveAsync(deleteGroup.Id);
 
-            await UpdateSelectedCourse(group.CourseId);
+            await UpdateSelectedCourse(deleteGroup.CourseId);
         }
 
         #endregion
@@ -285,7 +279,7 @@ namespace Task10.ViewModels
 
         private async Task UpdateSelectedCourse(int id)
         {
-            SelectedCourse = await _dbCourseService.GetAsync(id);
+            SelectedCourse = await _dbCourseService.GetDetailAsync(id);
             Groups = new ObservableCollection<Group>(SelectedCourse.Groups!);
         }
     }

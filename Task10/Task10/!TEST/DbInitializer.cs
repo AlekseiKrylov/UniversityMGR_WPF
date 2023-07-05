@@ -86,7 +86,7 @@ namespace Task10._TEST
             _logger.LogInformation("Teachers initialization completed in {0} ms", timer.ElapsedMilliseconds);
         }
 
-        private const int _GROUPS_COUNT = 25;
+        private const int _GROUPS_COUNT = 75;
         private Group[] _groups;
         private async Task InitializeGroupsAsync()
         {
@@ -109,7 +109,7 @@ namespace Task10._TEST
             _logger.LogInformation("Groups initialization completed in {0} ms", timer.ElapsedMilliseconds);
         }
 
-        private const int _STUDENTS_COUNT = 200;
+        private const int _STUDENTS_COUNT = 5_000;
         private Student[] _students;
         private async Task InitializeStudentsAsync()
         {

@@ -17,6 +17,7 @@ namespace Task10
         public static IServiceCollection AddViewModels(this IServiceCollection services) => services
             .AddSingleton<MainWindowViewModel>()
             .AddTransient<CoursesViewModel>()
+            .AddTransient<GroupsViewModel>()
             .AddTransient<GroupEditorViewModel>()
             .AddTransient<CourseEditorViewModel>()
             ;

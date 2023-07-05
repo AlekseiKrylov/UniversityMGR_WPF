@@ -10,7 +10,7 @@ namespace Task10.Services.Interfaces
     {
         IQueryable<T> Items { get; }
 
-        Task<T> GetAsync(int id, CancellationToken cancel = default);
+        Task<T> GetDetailAsync(int id, CancellationToken cancel = default);
 
         Task<T> AddAsync(T item, CancellationToken cancel = default);
 

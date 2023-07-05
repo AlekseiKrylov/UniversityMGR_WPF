@@ -15,14 +15,14 @@ namespace Task10.ViewModels
 
         public Group Group
         {
-            get { return _group; }
-            set { SetProperty(ref _group, value); }
+            get => _group;
+            set => SetProperty(ref _group, value);
         }
 
         public ObservableCollection<Teacher> Teachers
         {
-            get { return _teachers; }
-            set { SetProperty(ref _teachers, value); }
+            get => _teachers;
+            set => SetProperty(ref _teachers, value);
         }
 
         public GroupEditorViewModel(IDbService<Teacher> dbTheacherService)

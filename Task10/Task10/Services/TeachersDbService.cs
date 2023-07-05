@@ -14,7 +14,7 @@ namespace Task10.Services
 
         public TeachersDbService(Task10DbContext db) : base(db) => _db = db;
 
-        public override async Task<Teacher> GetAsync(int id, CancellationToken cancel = default)
+        public override async Task<Teacher> GetDetailAsync(int id, CancellationToken cancel = default)
         {
             var teacher = await base.Items.Include(t => t.Groups)
                 .SingleOrDefaultAsync(t => t.Id == id, cancel)
@@ -25,7 +25,7 @@ namespace Task10.Services
 
         public override async Task RemoveAsync(int id, CancellationToken cancel = default)
         {
-            var RemovableTeacher = await GetAsync(id, cancel);
+            var RemovableTeacher = await GetDetailAsync(id, cancel);
 
             if (RemovableTeacher is null)
                 throw new InvalidOperationException($"Exeption! The {RemovableTeacher} with ID={id} was not found in the context.");

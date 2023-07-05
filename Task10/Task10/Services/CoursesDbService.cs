@@ -15,7 +15,7 @@ namespace Task10.Services
 
         public CoursesDbService(Task10DbContext db) : base(db) => _db = db;
 
-        public override async Task<Course> GetAsync(int id, CancellationToken cancel = default)
+        public override async Task<Course> GetDetailAsync(int id, CancellationToken cancel = default)
         {
             //Thread.Sleep(3000);
             //await Task.Delay(3000, cancel);
@@ -30,7 +30,7 @@ namespace Task10.Services
 
         public override async Task RemoveAsync(int id, CancellationToken cancel = default)
         {
-            var RemovableCourse = await GetAsync(id, cancel);
+            var RemovableCourse = await GetDetailAsync(id, cancel);
 
             if (RemovableCourse is null)
                 throw new InvalidOperationException($"Exeption! The {RemovableCourse} with ID={id} was not found in the context.");

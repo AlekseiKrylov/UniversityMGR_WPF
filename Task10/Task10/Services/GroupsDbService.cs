@@ -14,8 +14,9 @@ namespace Task10.Services
 
         public GroupsDbService(Task10DbContext db) : base(db) => _db = db;
 
-        public override async Task<Group> GetAsync(int id, CancellationToken cancel = default)
+        public override async Task<Group> GetDetailAsync(int id, CancellationToken cancel = default)
         {
+            //await Task.Delay(3000, cancel);
             var group = await base.Items.Include(g => g.Students)
                 .SingleOrDefaultAsync(g => g.Id == id, cancel)
                 .ConfigureAwait(false);
@@ -25,7 +26,7 @@ namespace Task10.Services
 
         public override async Task RemoveAsync(int id, CancellationToken cancel = default)
         {
-            var RemovableGroup = await GetAsync(id, cancel);
+            var RemovableGroup = await GetDetailAsync(id, cancel);
 
             if (RemovableGroup is null)
                 throw new InvalidOperationException($"Exeption! The {RemovableGroup} with ID={id} was not found in the context.");
