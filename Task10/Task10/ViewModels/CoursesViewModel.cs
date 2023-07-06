@@ -48,8 +48,14 @@ namespace Task10.ViewModels
         public Group? SelectedGroup
         {
             get => _selectedGroup;
-            set => SetProperty(ref _selectedGroup, value);
+            set
+            {
+                SetProperty(ref _selectedGroup, value);
+                OnPropertyChanged(nameof(IsGroupSelected));
+            }
         }
+
+        public bool IsGroupSelected => SelectedGroup != null;
 
         public CoursesViewModel(IUserDialogService userDialogService,
             IDbService<Course> dbCourseService,

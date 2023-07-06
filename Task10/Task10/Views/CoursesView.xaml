@@ -68,7 +68,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                <DataGrid x:Name="groupGrid" Grid.Column="0" Margin="0 3 3 0" ItemsSource="{Binding Groups}">
+                <DataGrid x:Name="groupGrid" Grid.Column="0" Margin="0 3 3 0" ItemsSource="{Binding Groups}" SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Group name" Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="Teacher" Width="*" Binding="{Binding Teacher.FullName}"/>
