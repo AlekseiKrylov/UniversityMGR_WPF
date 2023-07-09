@@ -75,7 +75,7 @@ namespace Task10._TEST
             _teachers = Enumerable.Range(1, _TEACHERS_COUNT)
                 .Select(i => new Teacher
                 {
-                    Name = $"Teacher {i}",
+                    Name = $"Teacher_name {i}",
                     Surname = $"Teacher_surname {i}"
                 })
                 .ToArray();
@@ -120,7 +120,7 @@ namespace Task10._TEST
             _students = Enumerable.Range(1, _STUDENTS_COUNT)
                 .Select(i => new Student
                 {
-                    Name = $"Student {i}",
+                    Name = $"Student_name {i}",
                     Surname = $"Student_surname {i}",
                     Group = rnd.NextItem(_groups)
                 })

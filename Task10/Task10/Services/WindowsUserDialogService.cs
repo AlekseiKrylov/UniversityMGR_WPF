@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Task10.Models;
 using Task10.Services.Interfaces;
 using Task10.ViewModels;
@@ -10,7 +11,7 @@ namespace Task10.Services
 {
     internal class WindowsUserDialogService : IUserDialogService
     {
-        private static Window activeWindow => Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+        private static Window _ActiveWindow => Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
 
         public bool AddEdit(object item)
         {
@@ -23,6 +24,10 @@ namespace Task10.Services
                     return AddEditCourse(course);
                 case Group group:
                     return AddEditGroup(group);
+                case Student student:
+                    return AddEditStudent(student);
+                case Teacher teacher:
+                    return AddEditTeacher(teacher);
 
             }
         }
@@ -49,7 +54,6 @@ namespace Task10.Services
 
             Course tmpCourse = new()
             {
-                Id = course.Id,
                 Name = course.Name,
                 Description = course.Description
             };
@@ -57,7 +61,7 @@ namespace Task10.Services
             var dialog = new CourseEditorWindow
             {
                 Title = title,
-                Owner = activeWindow
+                Owner = _ActiveWindow
             };
 
             var viewModel = (CourseEditorViewModel)dialog.DataContext;
@@ -81,7 +85,6 @@ namespace Task10.Services
 
             Group tmpGroup = new()
             {
-                Id = group.Id,
                 Name = group.Name,
                 Course = group.Course,
                 Teacher = group.Teacher,
@@ -90,7 +93,7 @@ namespace Task10.Services
             var dialog = new GroupEditorWindow
             {
                 Title = title,
-                Owner = activeWindow
+                Owner = _ActiveWindow
             };
 
             var viewModel = (GroupEditorViewModel)dialog.DataContext;
@@ -102,6 +105,70 @@ namespace Task10.Services
             group.Name = viewModel.Group.Name;
             group.Course = viewModel.Group.Course;
             group.Teacher = viewModel.Group.Teacher;
+
+            return true;
+        }
+
+        private static bool AddEditStudent(Student student)
+        {
+            string title = "Create new student";
+
+            if (student.Id > 0)
+                title = $"Edit student: {student.FullName}";
+
+            Student tmpStudent = new()
+            {
+                Name = student.Name,
+                Surname = student.Surname,
+                Group = student.Group
+            };
+
+            var dialog = new StudentEditorWindow
+            {
+                Title = title,
+                Owner = _ActiveWindow
+            };
+
+            var viewModel = (StudentEditorViewModel)dialog.DataContext;
+            viewModel.Student = tmpStudent;
+
+            if (dialog.ShowDialog() != true)
+                return false;
+
+            student.Name = viewModel.Student.Name;
+            student.Surname = viewModel.Student.Surname;
+            student.Group = viewModel.Student.Group; //Check what happens if the user doesn't select a group
+
+            return true;
+        }
+
+        private static bool AddEditTeacher(Teacher teacher)
+        {
+            string title = "Create new teacher";
+
+            if (teacher.Id > 0)
+                title = $"Edit teacher: {teacher.FullName}";
+
+            Teacher tmpTeacher = new()
+            {
+                Name = teacher.Name,
+                Surname = teacher.Surname,
+            };
+
+            var dialog = new TeacherEditorWindow
+            {
+                Title = title,
+                Owner = _ActiveWindow
+            };
+
+            var viewModel = (TeacherEditorViewModel)dialog.DataContext;
+            viewModel.Teacher = tmpTeacher;
+
+            if (dialog.ShowDialog() != true)
+                return false;
+
+            teacher.Name = viewModel.Teacher.Name;
+            teacher.Surname = viewModel.Teacher.Surname;
 
             return true;
         }

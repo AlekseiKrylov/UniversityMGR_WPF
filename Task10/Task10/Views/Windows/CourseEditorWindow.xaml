@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:Task10.Views.Windows"
-        xmlns:vm="clr-namespace:Task10.ViewModels"
         DataContext="{Binding CourseEditorVM, Source={StaticResource vmLocator}}"
         Title="Course Editor" WindowStartupLocation="CenterOwner"
         Height="200" Width="300" MinHeight="130" MinWidth="300">

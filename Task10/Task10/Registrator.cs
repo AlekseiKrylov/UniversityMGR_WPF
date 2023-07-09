@@ -6,7 +6,6 @@ using Task10._TEST;
 using Task10.Data;
 using Task10.Models;
 using Task10.Services;
-using Task10.Services.Base;
 using Task10.Services.Interfaces;
 using Task10.ViewModels;
 
@@ -18,8 +17,12 @@ namespace Task10
             .AddSingleton<MainWindowViewModel>()
             .AddTransient<CoursesViewModel>()
             .AddTransient<GroupsViewModel>()
-            .AddTransient<GroupEditorViewModel>()
+            .AddTransient<StudentsViewModel>()
+            .AddTransient<TeachersViewModel>()
             .AddTransient<CourseEditorViewModel>()
+            .AddTransient<GroupEditorViewModel>()
+            .AddTransient<StudentEditorViewModel>()
+            .AddTransient<TeacherEditorViewModel>()
             ;
 
         public static IServiceCollection AddDatabase(this IServiceCollection services) => services
@@ -35,7 +38,7 @@ namespace Task10
         public static IServiceCollection AddDbServices(this IServiceCollection services) => services
             .AddTransient<IDbService<Course>, CoursesDbService>()
             .AddTransient<IDbService<Group>, GroupsDbService>()
-            .AddTransient<IDbService<Student>, DbServiceBase<Student>>()
+            .AddTransient<IDbService<Student>, StudentsDbService>()
             .AddTransient<IDbService<Teacher>, TeachersDbService>()
             .AddTransient<IUserDialogService, WindowsUserDialogService>()
             ;

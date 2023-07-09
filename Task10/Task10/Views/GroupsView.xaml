@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadGroupWithStudentsCommand}"/>
+            <i:InvokeCommandAction Command="{Binding LoadGroupsWithStudentsCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>-->
     <DockPanel>

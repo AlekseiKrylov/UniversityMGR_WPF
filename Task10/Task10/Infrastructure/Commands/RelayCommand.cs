@@ -53,9 +53,11 @@ namespace Task10.Infrastructure.Commands
                 default: throw new NotSupportedException($"Delegate of type {_execute.GetType()} is not supported by command");
                 case null: throw new InvalidOperationException($"Delegate 'execute' is not passed");
 
-                case Action execute: execute();
+                case Action execute:
+                    execute();
                     break;
-                case Action<object?> execute: execute(parameter);
+                case Action<object?> execute:
+                    execute(parameter);
                     break;
             }
         }

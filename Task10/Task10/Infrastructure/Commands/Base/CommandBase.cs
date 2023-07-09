@@ -15,7 +15,7 @@ namespace Task10.Infrastructure.Commands.Base
 
         void ICommand.Execute(object? parameter)
         {
-            if(CanExecute(parameter))
+            if (CanExecute(parameter))
                 Execute(parameter);
         }
 

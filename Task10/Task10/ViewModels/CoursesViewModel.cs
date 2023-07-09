@@ -17,7 +17,6 @@ namespace Task10.ViewModels
         private readonly IUserDialogService _userDialogService;
         private ObservableCollection<Course>? _courses;
         private ObservableCollection<Group>? _groups;
-        private ObservableCollection<Student>? _students;
         private Course? _selectedCourse;
         private Group? _selectedGroup;
 
@@ -33,12 +32,6 @@ namespace Task10.ViewModels
             private set => SetProperty(ref _groups, value);
         }
 
-        public ObservableCollection<Student>? Students
-        {
-            get => _students;
-            private set => SetProperty(ref _students, value);
-        }
-
         public Course? SelectedCourse
         {
             get => _selectedCourse;
@@ -52,10 +45,13 @@ namespace Task10.ViewModels
             {
                 SetProperty(ref _selectedGroup, value);
                 OnPropertyChanged(nameof(IsGroupSelected));
+                OnPropertyChanged(nameof(StudentsGroupBoxHeader));
             }
         }
 
         public bool IsGroupSelected => SelectedGroup != null;
+
+        public string StudentsGroupBoxHeader => SelectedGroup != null ? $"Students ({SelectedGroup.Students.Count}):" : string.Empty;
 
         public CoursesViewModel(IUserDialogService userDialogService,
             IDbService<Course> dbCourseService,
@@ -100,11 +96,11 @@ namespace Task10.ViewModels
         #region CreateCourseCommand
 
         private ICommand? _createCourseCommand;
-        
+
         public ICommand CreateCourseCommand => _createCourseCommand
             ??= new RelayCommand(OnCreateCourseCommandExecuted);
 
-        private async void OnCreateCourseCommandExecuted(object? p)
+        private async void OnCreateCourseCommandExecuted()
         {
             var newCourse = new Course();
 
@@ -184,10 +180,8 @@ namespace Task10.ViewModels
         private async void OnSelectGroupCommandExecuted(object? p)
         {
             var selectedGroup = (Group)p!;
-         
-            SelectedGroup = await _dbGroupService.GetDetailAsync(selectedGroup.Id);
 
-            Students = new ObservableCollection<Student>(SelectedGroup.Students);
+            SelectedGroup = await _dbGroupService.GetDetailAsync(selectedGroup.Id);
         }
 
         #endregion
@@ -209,6 +203,7 @@ namespace Task10.ViewModels
                 await _dbGroupService.AddAsync(newGroup);
 
             await UpdateSelectedCourse(course.Id);
+            SelectedGroup = newGroup;
         }
 
         #endregion

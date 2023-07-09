@@ -11,7 +11,7 @@ namespace Task10.ViewModels
     {
         private Group _group;
         private ObservableCollection<Teacher> _teachers;
-        private IDbService<Teacher> _dbTeacherService;
+        private readonly IDbService<Teacher> _dbTeacherService;
 
         public Group Group
         {
