@@ -83,10 +83,11 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedTeacher.Name}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedTeacher.Surname}"/>
-                <DataGrid x:Name="teachersGroupsGrid" Grid.Row="3" Grid.ColumnSpan="2">
+                <DataGrid x:Name="teachersGroupsGrid" Grid.Row="3" Grid.ColumnSpan="2"
+                          ItemsSource="{Binding Groups}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Group" Width="Auto" Binding="{Binding SelectedTeacher.Group.Name}"/>
-                        <DataGridTextColumn Header="Course" Width="*" Binding="{Binding SelectedTeacher.Group.Course.Name}"/>
+                        <DataGridTextColumn Header="Group" Width="Auto" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Course" Width="*" Binding="{Binding Course.Name}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

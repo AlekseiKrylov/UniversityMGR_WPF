@@ -15,12 +15,19 @@ namespace Task10.ViewModels
         private readonly IDbService<Teacher> _dbTeacherService;
         private readonly IUserDialogService _userDialogService;
         private ObservableCollection<Teacher>? _teachers;
+        private ObservableCollection<Group>? _groups;
         private Teacher? _selectedTeacher;
 
         public ObservableCollection<Teacher>? Teachers
         {
             get => _teachers;
             private set => SetProperty(ref _teachers, value);
+        }
+
+        public ObservableCollection<Group>? Groups
+        {
+            get => _groups;
+            private set => SetProperty(ref _groups, value);
         }
 
         public Teacher? SelectedTeacher
@@ -144,6 +151,7 @@ namespace Task10.ViewModels
         private async Task UpdateSelectedTeacher(int id)
         {
             SelectedTeacher = await _dbTeacherService.GetDetailAsync(id);
+            Groups = new ObservableCollection<Group>(SelectedTeacher.Groups);
         }
     }
 }
