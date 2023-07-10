@@ -10,7 +10,7 @@ using Task10.ViewModels.Base;
 
 namespace Task10.ViewModels
 {
-    internal class CoursesViewModel : ViewModelBase
+    internal class CoursesAndGroupsViewModel : ViewModelBase
     {
         private readonly IDbService<Course> _dbCourseService;
         private readonly IDbService<Group> _dbGroupService;
@@ -53,7 +53,7 @@ namespace Task10.ViewModels
 
         public string StudentsGroupBoxHeader => SelectedGroup != null ? $"Students ({SelectedGroup.Students.Count}):" : string.Empty;
 
-        public CoursesViewModel(IUserDialogService userDialogService,
+        public CoursesAndGroupsViewModel(IUserDialogService userDialogService,
             IDbService<Course> dbCourseService,
             IDbService<Group> dbGroupService)
         {

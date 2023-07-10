@@ -2,9 +2,9 @@
 
 namespace Task10.Views
 {
-    public partial class CoursesView : UserControl
+    public partial class CoursesAndGroupsView : UserControl
     {
-        public CoursesView()
+        public CoursesAndGroupsView()
         {
             InitializeComponent();
         }

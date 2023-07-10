@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Task10.Views.CoursesView"
+﻿<UserControl x:Class="Task10.Views.CoursesAndGroupsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
