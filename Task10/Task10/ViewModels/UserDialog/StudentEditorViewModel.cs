@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Task10.Models;
-using Task10.Services.Interfaces;
+using Task10.Services.DbServices.Interfaces;
 using Task10.ViewModels.Base;
 
 namespace Task10.ViewModels

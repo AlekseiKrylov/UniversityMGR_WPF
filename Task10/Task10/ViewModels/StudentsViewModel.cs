@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
+using Task10.Services.DbServices.Interfaces;
 using Task10.Services.Interfaces;
 using Task10.ViewModels.Base;
 

@@ -15,7 +15,7 @@
                 <MenuItem Header="Exit" Command="{StaticResource CloseAppCommand}">
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Help">
+            <MenuItem Header="Help" Visibility="Collapsed">
                 <MenuItem Header="About..."/>
             </MenuItem>
         </Menu>
@@ -23,7 +23,7 @@
             <StatusBarItem>
                 <TextBlock Text="{Binding Status}"/>
             </StatusBarItem>
-            <StatusBarItem>
+            <StatusBarItem Visibility="Collapsed">
                 <ProgressBar Width="100" Height="14" Value="42"/>
             </StatusBarItem>
         </StatusBar>

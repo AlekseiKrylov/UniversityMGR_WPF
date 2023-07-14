@@ -10,20 +10,20 @@ namespace Task10.Services
 {
     class FileService : IFileService
     {
-        public bool ExportToFile(object item, string path)
+        public bool ExportToFile(object item, string path, string headerText = "")
         {
             if (item is null)
                 throw new ArgumentNullException(nameof(item));
-            
+
             if (path is null)
                 throw new ArgumentNullException(nameof(path));
-            
+
             var fileType = Path.GetExtension(path).ToUpper();
 
             return (item, fileType) switch
             {
-                (Group group, ".PDF") => PDFGenerator.ExportGroupStudentsToPDF(group, path),
-                (Group group, ".DOCX") => DOCXGenerator.ExportGroupDetailToDOCX(group, path),
+                (List<Student> students, ".PDF") => PDFGenerator.ExportGroupStudentsToPDF(students, path, headerText),
+                (List<Student> students, ".DOCX") => DOCXGenerator.ExportGroupStudentsToDOCX(students, path, headerText),
                 (List<Student> students, ".CSV") => CSVGenerator.ExportListOfStudentsToCSV(students, path),
                 _ => throw new NotSupportedException($"Export object of type {item.GetType().Name} to {fileType} not supported"),
             };

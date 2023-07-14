@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
+using Task10.Services.DbServices.Interfaces;
 using Task10.Services.Interfaces;
 using Task10.ViewModels.Base;
 
@@ -23,6 +24,8 @@ namespace Task10.ViewModels
         private ObservableCollection<Student>? _students;
         private Course? _selectedCourse;
         private Group? _selectedGroup;
+
+        #region PROPERTIES
 
         public ObservableCollection<Course>? Courses
         {
@@ -64,6 +67,8 @@ namespace Task10.ViewModels
 
         public string StudentsGroupBoxHeader => SelectedGroup != null ? $"Students ({SelectedGroup.Students.Count}):" : string.Empty;
 
+        #endregion
+
         public CoursesAndGroupsViewModel(IUserDialogService userDialogService,
             IDbService<Course> dbCourseService,
             IDbService<Group> dbGroupService,
@@ -76,6 +81,8 @@ namespace Task10.ViewModels
             _fileService = fileService;
             _userDialogService = userDialogService;
         }
+
+        #region COMMANDS
 
         #region Curse commands
 
@@ -272,6 +279,43 @@ namespace Task10.ViewModels
 
         #endregion
 
+        #region ExportStudentsToFileCommand
+
+        private RelayCommand _exportStudentsCommand;
+
+        public ICommand ExportStudentsToFileCommand => _exportStudentsCommand
+            ??= new(OnExportStudentsToFileCommandExecuted, CanExportStudentsToFileCommandExecute);
+
+        private bool CanExportStudentsToFileCommandExecute(object? p) => !(p is null || p is not Group || ((Group)p).Students.Count < 1);
+
+        private void OnExportStudentsToFileCommandExecuted(object? p)
+        {
+            var group = (Group)p!;
+            var students = group.Students.ToList();
+            string title = $"Export students to File";
+            string filter = "PDF files (*.pdf)|*.pdf|Word files (*.docx)|*.docx|CSV files (*.csv)|*.csv";
+            string fileName = $"{group.Course.Name}_{group.Name}";
+            string headerText = $"{group.Course.Name} - {group.Name}";
+
+            if (!_userDialogService.SaveFile(title, out string? filePath, fileName, filter))
+                return;
+
+            try
+            {
+                if (!_fileService.ExportToFile(students, filePath!, headerText))
+                    _userDialogService.ShowWarning("Exports failed", title);
+
+                _userDialogService.ShowInformation($"Exported in {filePath}", title);
+
+            }
+            catch (Exception ex)
+            {
+                _userDialogService.ShowError($"Export error: {ex.Message}", title);
+            }
+        }
+
+        #endregion
+
         #region ImportStudentsFromFileCommand
 
         private RelayCommand _importStudentsFromFileCommand;
@@ -308,58 +352,6 @@ namespace Task10.ViewModels
         }
 
         #endregion
-
-        #region ExportListOfStudentsToCSV
-
-        private RelayCommand _exportListOfStudentsToCSVCommand;
-
-        public ICommand ExportListOfStudentsToCSVCommand => _exportListOfStudentsToCSVCommand
-            ??= new(OnExportListOfStudentsToCSVCommandExecuted, CanExportListOfStudentsToCSVCommandExecute);
-
-        private bool CanExportListOfStudentsToCSVCommandExecute(object? p) => !(p is null || p is not Group || ((Group)p).Students.Count < 1);
-
-        private void OnExportListOfStudentsToCSVCommandExecuted(object? p)
-        {
-            var students = ((Group)p!).Students.ToList();
-            string title = $"Export students to CSV";
-            string filter = "CSV files (*.csv)|*.csv";
-            string fileName = $"ListOfStudents_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-            if (!_userDialogService.SaveFile(title, out string? filePath, fileName, filter))
-                return;
-
-            if (_fileService.ExportToFile(students, filePath!))
-                _userDialogService.ShowInformation($"Saved in {filePath}", title);
-            else
-                _userDialogService.ShowError($"Exports failed", title);
-        }
-
-        #endregion
-
-        #region ExportGroupStudentsToFile
-
-        private RelayCommand _exportGroupStudentsCommand;
-
-        public ICommand ExportGroupStudentsCommand => _exportGroupStudentsCommand
-            ??= new(OnExportGroupStudentsCommandExecuted, CanExportGroupStudentsCommandExecute);
-
-        private bool CanExportGroupStudentsCommandExecute(object? p) => !(p is null || p is not Group || ((Group)p).Students.Count < 1);
-
-        private void OnExportGroupStudentsCommandExecuted(object? p)
-        {
-            var group = (Group)p!;
-            string title = $"Export students to File";
-            string filter = "PDF files (*.pdf)|*.pdf|Word files (*.docx)|*.docx";
-            string fileName = $"{group.Course.Name}_{group.Name}";
-
-            if (!_userDialogService.SaveFile(title, out string? filePath, fileName, filter))
-                return;
-
-            if (_fileService.ExportToFile(group, filePath!))
-                _userDialogService.ShowInformation($"Saved in {filePath}", title);
-            else
-                _userDialogService.ShowError($"Exports failed", title);
-        }
 
         #endregion
 

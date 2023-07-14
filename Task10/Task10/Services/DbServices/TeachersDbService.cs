@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Task10.Data;
 using Task10.Models;
-using Task10.Services.Base;
+using Task10.Services.DbServices.Base;
 
-namespace Task10.Services
+namespace Task10.Services.DbServices
 {
     internal class TeachersDbService : DbServiceBase<Teacher>
     {

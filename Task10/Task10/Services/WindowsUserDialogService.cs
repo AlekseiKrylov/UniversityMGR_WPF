@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using Task10.Models;
@@ -172,7 +171,7 @@ namespace Task10.Services
 
             student.Name = viewModel.Student.Name;
             student.Surname = viewModel.Student.Surname;
-            student.Group = viewModel.Student.Group; //Check what happens if the user doesn't select a group
+            student.Group = viewModel.Student.Group;
 
             return true;
         }

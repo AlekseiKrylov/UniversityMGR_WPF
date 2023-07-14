@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Task10.Models;
@@ -10,7 +11,7 @@ namespace Task10.Infrastructure.FileGenerators
 {
     internal class DOCXGenerator
     {
-        public static bool ExportGroupDetailToDOCX(Group group, string path)
+        public static bool ExportGroupStudentsToDOCX(List<Student> students, string path, string headerText = "")
         {
             try
             {
@@ -26,31 +27,34 @@ namespace Task10.Infrastructure.FileGenerators
                     runProperties.Append(runFonts);
                     runProperties.Append(fontSize);
 
-                    HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
-                    Header header = new Header();
+                    if (!string.IsNullOrEmpty(headerText))
+                    {
+                        HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+                        Header header = new();
 
-                    Paragraph paragraph = new();
-                    Run headerText = new(new Text($"{group.Course.Name} - {group.Name}"));
-                    headerText.RunProperties = runProperties;
+                        Paragraph paragraph = new();
+                        Run headerRun = new(new Text(headerText));
+                        headerRun.RunProperties = runProperties;
 
-                    ParagraphProperties paragraphProperties = new();
-                    Justification justification = new() { Val = JustificationValues.Center };
+                        ParagraphProperties paragraphProperties = new();
+                        Justification justification = new() { Val = JustificationValues.Center };
 
-                    paragraphProperties.Append(justification);
-                    paragraph.Append(paragraphProperties);
-                    paragraph.Append(headerText);
+                        paragraphProperties.Append(justification);
+                        paragraph.Append(paragraphProperties);
+                        paragraph.Append(headerRun);
 
-                    header.Append(paragraph);
+                        header.Append(paragraph);
 
-                    headerPart.Header = header;
-                    string headerPartId = mainPart.GetIdOfPart(headerPart);
+                        headerPart.Header = header;
+                        string headerPartId = mainPart.GetIdOfPart(headerPart);
 
-                    SectionProperties sectionProperties = new(new HeaderReference() { Type = HeaderFooterValues.Default, Id = headerPartId });
-                    body.Append(sectionProperties);
+                        SectionProperties sectionProperties = new(new HeaderReference() { Type = HeaderFooterValues.Default, Id = headerPartId });
+                        body.Append(sectionProperties);
+                    }
 
                     Paragraph studentsParagraph = new();
                     int studentNumber = 1;
-                    foreach (Student student in group.Students)
+                    foreach (Student student in students)
                     {
                         Run studentNumberRun = new(new Text($"{studentNumber}.\u00A0"));
                         studentNumberRun.RunProperties = (RunProperties)runProperties.CloneNode(true);

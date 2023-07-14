@@ -2,6 +2,7 @@
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Task10.Models;
@@ -10,7 +11,7 @@ namespace Task10.Infrastructure.FileGenerators
 {
     internal class PDFGenerator
     {
-        public static bool ExportGroupStudentsToPDF(Group group, string path)
+        public static bool ExportGroupStudentsToPDF(List<Student> students, string path, string headerText = "")
         {
             try
             {
@@ -21,12 +22,12 @@ namespace Task10.Infrastructure.FileGenerators
                     XFont font = new("Arial", 12, XFontStyleEx.Regular);
                     XRect contentRect = GetContentRect(page);
                     XPoint position = new(contentRect.X, contentRect.Y);
-                    string headerText = $"{group.Course.Name} - {group.Name}";
                     int studentNumber = 1;
 
-                    AddHeader(page, headerText, graphics);
+                    if (!string.IsNullOrEmpty(headerText))
+                        AddHeader(page, headerText, graphics);
 
-                    foreach (Student student in group.Students)
+                    foreach (Student student in students)
                     {
                         string studentText = $"{studentNumber}. {student.FullName}";
                         position = DrawText(studentText, headerText, font, position, contentRect, ref graphics, ref page, document);

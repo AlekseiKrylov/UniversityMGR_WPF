@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Task10.Data;
 using Task10.Models.Base;
-using Task10.Services.Interfaces;
+using Task10.Services.DbServices.Interfaces;
 
-namespace Task10.Services.Base
+namespace Task10.Services.DbServices.Base
 {
     internal class DbServiceBase<T> : IDbService<T> where T : Entity, new()
     {

@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Task10.Data;
 using Task10.Models;
-using Task10.Services.Base;
+using Task10.Services.DbServices.Base;
 
-namespace Task10.Services
+namespace Task10.Services.DbServices
 {
     internal class CoursesDbService : DbServiceBase<Course>
     {
@@ -16,8 +16,6 @@ namespace Task10.Services
 
         public override async Task<Course> GetDetailAsync(int id, CancellationToken cancel = default)
         {
-            //Thread.Sleep(3000);
-            //await Task.Delay(3000, cancel);
             var course = await base.Items
                 .Include(c => c.Groups)
                     .ThenInclude(g => g.Teacher)
