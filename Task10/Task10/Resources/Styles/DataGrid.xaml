@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cc="clr-namespace:Task10.Infrastructure.CustomControls">
 
-    <Style x:Key="DefaultDataGridStyle" TargetType="{x:Type DataGrid}">
+    <Style TargetType="{x:Type DataGrid}">
         <Setter Property="AutoGenerateColumns" Value="False"/>
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="GridLinesVisibility" Value="Vertical"/>
@@ -11,6 +11,6 @@
         <Setter Property="HeadersVisibility" Value="Column"/>
     </Style>
 
-    <Style TargetType="cc:ScrollingDataGrid" BasedOn="{StaticResource DefaultDataGridStyle}"/>
+    <Style TargetType="cc:ScrollingDataGrid" BasedOn="{StaticResource {x:Type DataGrid}}"/>
 
 </ResourceDictionary>

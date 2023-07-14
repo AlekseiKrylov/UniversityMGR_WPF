@@ -4,9 +4,6 @@ namespace Task10.Views
 {
     public partial class TeachersView : UserControl
     {
-        public TeachersView()
-        {
-            InitializeComponent();
-        }
+        public TeachersView() => InitializeComponent();
     }
 }

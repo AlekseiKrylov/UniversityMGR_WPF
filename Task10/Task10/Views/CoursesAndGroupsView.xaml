@@ -7,6 +7,7 @@
              xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:cc="clr-namespace:Task10.Infrastructure.CustomControls"
              xmlns:l="clr-namespace:Task10.Views"
+             x:Name="coursesAndGroupsView"
              DataContext="{Binding CoursesVM, Source={StaticResource vmLocator}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <i:Interaction.Triggers>
@@ -81,17 +82,23 @@
                                                 <MenuItem.Header>
                                                     <fa:ImageAwesome Icon="Solid_EllipsisVertical" Height="13"/>
                                                 </MenuItem.Header>
-                                                <MenuItem Header="Export group details to File" Command="">
+                                                <MenuItem Header="Save students to File..."
+                                                          Command="{Binding DataContext.ExportGroupStudentsCommand, ElementName=coursesAndGroupsView}"
+                                                              CommandParameter="{Binding SelectedItem, ElementName=groupGrid}">
                                                     <MenuItem.Icon>
                                                         <fa:ImageAwesome Icon="Solid_FileLines"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem Header="Import students from File" Command="">
+                                                    <MenuItem Header="Import students from CSV"
+                                                              Command="{Binding DataContext.ImportStudentsFromFileCommand, ElementName=coursesAndGroupsView}"
+                                                              CommandParameter="{Binding SelectedItem, ElementName=groupGrid}">
                                                     <MenuItem.Icon>
                                                         <fa:ImageAwesome Icon="Solid_FileImport"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                                <MenuItem Header="Export students to File" Command="">
+                                                <MenuItem Header="Export students to CSV"
+                                                          Command="{Binding DataContext.ExportListOfStudentsToCSVCommand, ElementName=coursesAndGroupsView}"
+                                                          CommandParameter="{Binding SelectedItem, ElementName=groupGrid}">
                                                     <MenuItem.Icon>
                                                         <fa:ImageAwesome Icon="Solid_FileExport"/>
                                                     </MenuItem.Icon>

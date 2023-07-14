@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Task10.Models;
 using Task10.Services.Interfaces;
 using Task10.ViewModels;
@@ -15,21 +16,17 @@ namespace Task10.Services
 
         public bool AddEdit(object item)
         {
-            if (item is null) throw new ArgumentNullException(nameof(item));
+            if (item is null)
+                throw new ArgumentNullException(nameof(item));
 
-            switch (item)
+            return item switch
             {
-                default: throw new NotSupportedException($"Editing object of type {item.GetType().Name} not supported");
-                case Course course:
-                    return AddEditCourse(course);
-                case Group group:
-                    return AddEditGroup(group);
-                case Student student:
-                    return AddEditStudent(student);
-                case Teacher teacher:
-                    return AddEditTeacher(teacher);
-
-            }
+                Course course => AddEditCourse(course),
+                Group group => AddEditGroup(group),
+                Student student => AddEditStudent(student),
+                Teacher teacher => AddEditTeacher(teacher),
+                _ => throw new NotSupportedException($"Editing object of type {item.GetType().Name} not supported"),
+            };
         }
 
         public void ShowInformation(string message, string caption) =>
@@ -44,6 +41,44 @@ namespace Task10.Services
         public bool Confirm(string message, string caption, bool exclamation = false) =>
             MessageBox.Show(message, caption, MessageBoxButton.YesNo,
                 exclamation ? MessageBoxImage.Exclamation : MessageBoxImage.Question) == MessageBoxResult.Yes;
+
+        public bool OpenFile(string title, out string? selectedFile, string filter = "All files (*.*)|*.*")
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = title,
+                Filter = filter
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                selectedFile = null;
+                return false;
+            }
+
+            selectedFile = dialog.FileName;
+            return true;
+        }
+
+        public bool SaveFile(string title, out string? filePath, string? fileName = null, string filter = "All files (*.*)|*.*")
+        {
+            filePath = null;
+
+            var dialog = new SaveFileDialog
+            {
+                Title = title,
+                Filter = filter
+            };
+
+            if (!string.IsNullOrWhiteSpace(fileName))
+                dialog.FileName = fileName;
+
+            if (dialog.ShowDialog() != true)
+                return false;
+
+            filePath = dialog.FileName;
+            return true;
+        }
 
         private static bool AddEditCourse(Course course)
         {

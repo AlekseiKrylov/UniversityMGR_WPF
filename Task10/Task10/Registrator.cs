@@ -40,6 +40,7 @@ namespace Task10
             .AddTransient<IDbService<Student>, StudentsDbService>()
             .AddTransient<IDbService<Teacher>, TeachersDbService>()
             .AddTransient<IUserDialogService, WindowsUserDialogService>()
+            .AddTransient<IFileService, FileService>()
             ;
     }
 }
