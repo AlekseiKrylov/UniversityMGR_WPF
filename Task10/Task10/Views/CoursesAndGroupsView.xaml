@@ -131,7 +131,7 @@
                                 </Style.Triggers>
                             </Style>
                         </GroupBox.Style>
-                        <ListBox x:Name="studentsList" ItemsSource="{Binding SelectedGroup.Students}"
+                        <ListBox x:Name="studentsList" ItemsSource="{Binding Students}"
                                  DisplayMemberPath="FullName" MinWidth="200">
                         </ListBox>
                     </GroupBox>

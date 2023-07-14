@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,13 +15,14 @@ namespace Task10.ViewModels
     {
         private readonly IDbService<Course> _dbCourseService;
         private readonly IDbService<Group> _dbGroupService;
+        private readonly IDbService<Student> _dbStudentService;
         private readonly IFileService _fileService;
         private readonly IUserDialogService _userDialogService;
         private ObservableCollection<Course>? _courses;
         private ObservableCollection<Group>? _groups;
+        private ObservableCollection<Student>? _students;
         private Course? _selectedCourse;
         private Group? _selectedGroup;
-        private FileInfo _selectedFile;
 
         public ObservableCollection<Course>? Courses
         {
@@ -34,6 +34,12 @@ namespace Task10.ViewModels
         {
             get => _groups;
             private set => SetProperty(ref _groups, value);
+        }
+
+        public ObservableCollection<Student>? Students
+        {
+            get => _students;
+            private set => SetProperty(ref _students, value);
         }
 
         public Course? SelectedCourse
@@ -50,6 +56,7 @@ namespace Task10.ViewModels
                 SetProperty(ref _selectedGroup, value);
                 OnPropertyChanged(nameof(IsGroupSelected));
                 OnPropertyChanged(nameof(StudentsGroupBoxHeader));
+                OnPropertyChanged(nameof(Students));
             }
         }
 
@@ -60,10 +67,12 @@ namespace Task10.ViewModels
         public CoursesAndGroupsViewModel(IUserDialogService userDialogService,
             IDbService<Course> dbCourseService,
             IDbService<Group> dbGroupService,
+            IDbService<Student> dbStudentService,
             IFileService fileService)
         {
             _dbCourseService = dbCourseService;
             _dbGroupService = dbGroupService;
+            _dbStudentService = dbStudentService;
             _fileService = fileService;
             _userDialogService = userDialogService;
         }
@@ -94,7 +103,7 @@ namespace Task10.ViewModels
         {
             SelectedGroup = null;
             var selectedCourse = (Course)p!;
-            await UpdateSelectedCourse(selectedCourse.Id);
+            await UpdateSelectedCourseAsync(selectedCourse.Id);
         }
 
         #endregion
@@ -186,8 +195,7 @@ namespace Task10.ViewModels
         private async void OnSelectGroupCommandExecuted(object? p)
         {
             var selectedGroup = (Group)p!;
-
-            SelectedGroup = await _dbGroupService.GetDetailAsync(selectedGroup.Id);
+            await UpdateSelectedGroupAsync(selectedGroup.Id);
         }
 
         #endregion
@@ -208,7 +216,7 @@ namespace Task10.ViewModels
             if (_userDialogService.AddEdit(newGroup))
                 await _dbGroupService.AddAsync(newGroup);
 
-            await UpdateSelectedCourse(course.Id);
+            await UpdateSelectedCourseAsync(course.Id);
             SelectedGroup = newGroup;
         }
 
@@ -227,7 +235,7 @@ namespace Task10.ViewModels
             if (_userDialogService.AddEdit(p!))
                 await _dbGroupService.UpdateAsync((Group)p!);
 
-            await UpdateSelectedCourse(((Group)p!).CourseId);
+            await UpdateSelectedCourseAsync(((Group)p!).CourseId);
         }
 
         #endregion
@@ -259,12 +267,12 @@ namespace Task10.ViewModels
 
             await _dbGroupService.RemoveAsync(deleteGroup.Id);
 
-            await UpdateSelectedCourse(deleteGroup.CourseId);
+            await UpdateSelectedCourseAsync(deleteGroup.CourseId);
         }
 
         #endregion
 
-        #region ImportStudentsFromFileCommand !!!TO DO!!!
+        #region ImportStudentsFromFileCommand
 
         private RelayCommand _importStudentsFromFileCommand;
 
@@ -273,13 +281,30 @@ namespace Task10.ViewModels
 
         private bool CanImportStudentsFromFileCommandExecute(object? p) => !(p is null || p is not Group);
 
-        private void OnImportStudentsFromFileCommandExecuted(object? p)
+        private async void OnImportStudentsFromFileCommandExecuted(object? p)
         {
             var group = (Group)p!;
             string title = $"Import students from File";
+            string filter = "CSV files (*.csv)|*.csv";
 
-            //if (!_userDialogService.OpenFile(title, out var filePath))
-            //    return;
+            if (!_userDialogService.OpenFile(title, out var filePath, filter))
+                return;
+
+            if (!_fileService.ImportFromFile(new Student(), filePath!, out object result, true))
+                _userDialogService.ShowError($"Exports failed", title);
+
+            var newStudents = (List<Student>)result;
+            foreach (var student in newStudents)
+                student.Group = group;
+
+            var oldStudents = group.Students.ToList();
+            foreach (var student in oldStudents)
+                student.Group = null;
+
+            await _dbStudentService.UpdateRangeAsync(oldStudents);
+            await _dbStudentService.AddRangeAsync(newStudents);
+            await UpdateSelectedGroupAsync(group.Id);
+            _userDialogService.ShowInformation($"Students imported", title);
         }
 
         #endregion
@@ -303,9 +328,7 @@ namespace Task10.ViewModels
             if (!_userDialogService.SaveFile(title, out string? filePath, fileName, filter))
                 return;
 
-            string fileType = Path.GetExtension(filePath!);
-
-            if (_fileService.ExportToFile(students, fileType, filePath!))
+            if (_fileService.ExportToFile(students, filePath!))
                 _userDialogService.ShowInformation($"Saved in {filePath}", title);
             else
                 _userDialogService.ShowError($"Exports failed", title);
@@ -325,16 +348,14 @@ namespace Task10.ViewModels
         private void OnExportGroupStudentsCommandExecuted(object? p)
         {
             var group = (Group)p!;
-            string title = $"Export group students to File";
+            string title = $"Export students to File";
             string filter = "PDF files (*.pdf)|*.pdf|Word files (*.docx)|*.docx";
             string fileName = $"{group.Course.Name}_{group.Name}";
 
             if (!_userDialogService.SaveFile(title, out string? filePath, fileName, filter))
                 return;
 
-            string fileType = Path.GetExtension(filePath!);
-
-            if (_fileService.ExportToFile(group, fileType, filePath!))
+            if (_fileService.ExportToFile(group, filePath!))
                 _userDialogService.ShowInformation($"Saved in {filePath}", title);
             else
                 _userDialogService.ShowError($"Exports failed", title);
@@ -350,10 +371,16 @@ namespace Task10.ViewModels
             Courses = new ObservableCollection<Course>(courses);
         }
 
-        private async Task UpdateSelectedCourse(int id)
+        private async Task UpdateSelectedCourseAsync(int id)
         {
             SelectedCourse = await _dbCourseService.GetDetailAsync(id);
             Groups = new ObservableCollection<Group>(SelectedCourse.Groups!);
+        }
+
+        private async Task UpdateSelectedGroupAsync(int id)
+        {
+            SelectedGroup = await _dbGroupService.GetDetailAsync(id);
+            Students = new ObservableCollection<Student>(SelectedGroup.Students);
         }
     }
 }
