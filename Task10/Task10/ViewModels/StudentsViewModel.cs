@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using Task10.Infrastructure.Commands;
 using Task10.Models;
@@ -15,13 +17,21 @@ namespace Task10.ViewModels
     {
         private readonly IDbService<Student> _dbStudentService;
         private readonly IUserDialogService _userDialogService;
-        private ObservableCollection<Student>? _students;
+        private readonly CollectionViewSource _studentsViewSourse = new();
         private Student? _selectedStudent;
+        private string _studentFilterText;
 
-        public ObservableCollection<Student>? Students
+        public ICollectionView? StudentsCollectionView => _studentsViewSourse?.View;
+
+        public string StudentFilterText
         {
-            get => _students;
-            private set => SetProperty(ref _students, value);
+            get => _studentFilterText;
+            set
+            {
+                if (!SetProperty(ref _studentFilterText, value))
+                    return;
+                _studentsViewSourse.View.Refresh();
+            }
         }
 
         public Student? SelectedStudent
@@ -35,6 +45,8 @@ namespace Task10.ViewModels
         {
             _dbStudentService = dbStudentService;
             _userDialogService = userDialogService;
+
+            _studentsViewSourse.Filter += OnStudentsFiltred;
         }
 
         #region COMMANDS
@@ -139,12 +151,22 @@ namespace Task10.ViewModels
         private void UpdateStudentsList()
         {
             List<Student> students = _dbStudentService.Items.ToList();
-            Students = new ObservableCollection<Student>(students);
+            _studentsViewSourse.Source = students;
+            OnPropertyChanged(nameof(StudentsCollectionView));
         }
 
         private async Task UpdateSelectedStudent(int id)
         {
             SelectedStudent = await _dbStudentService.GetDetailAsync(id);
+        }
+
+        private void OnStudentsFiltred(object sender, FilterEventArgs e)
+        {
+            if (e.Item is not Student student || string.IsNullOrEmpty(StudentFilterText))
+                return;
+
+            if (!student.FullName.Contains(StudentFilterText, StringComparison.OrdinalIgnoreCase))
+                e.Accepted = false;
         }
     }
 }

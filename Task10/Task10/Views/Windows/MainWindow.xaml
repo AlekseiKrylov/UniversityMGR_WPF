@@ -13,6 +13,9 @@
         <Menu DockPanel.Dock="Top" IsMainMenu="True">
             <MenuItem Header="File">
                 <MenuItem Header="Exit" Command="{StaticResource CloseAppCommand}">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="Solid_DoorOpen"/>
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Help" Visibility="Collapsed">
