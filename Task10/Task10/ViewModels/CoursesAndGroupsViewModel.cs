@@ -126,9 +126,10 @@ namespace Task10.ViewModels
         {
             var newCourse = new Course();
 
-            if (_userDialogService.AddEdit(newCourse))
-                await _dbCourseService.AddAsync(newCourse);
-
+            if (!_userDialogService.AddEdit(newCourse))
+                return;
+                
+            await _dbCourseService.AddAsync(newCourse);
             UpdateCourseList();
             SelectedCourse = newCourse;
         }
@@ -145,9 +146,10 @@ namespace Task10.ViewModels
 
         private async void OnEditCourseCommandExecuted(object? p)
         {
-            if (_userDialogService.AddEdit(p!))
-                await _dbCourseService.UpdateAsync((Course)p!);
+            if (!_userDialogService.AddEdit(p!))
+                return;
 
+            await _dbCourseService.UpdateAsync((Course)p!);
             UpdateCourseList();
             OnPropertyChanged(nameof(SelectedCourse));
         }
@@ -220,9 +222,10 @@ namespace Task10.ViewModels
             var course = (Course)p!;
             var newGroup = new Group { Course = course };
 
-            if (_userDialogService.AddEdit(newGroup))
-                await _dbGroupService.AddAsync(newGroup);
-
+            if (!_userDialogService.AddEdit(newGroup))
+                return;
+                
+            await _dbGroupService.AddAsync(newGroup);
             await UpdateSelectedCourseAsync(course.Id);
             SelectedGroup = newGroup;
         }
@@ -239,9 +242,10 @@ namespace Task10.ViewModels
 
         private async void OnEditGroupCommandExecuted(object? p)
         {
-            if (_userDialogService.AddEdit(p!))
-                await _dbGroupService.UpdateAsync((Group)p!);
-
+            if (!_userDialogService.AddEdit(p!))
+                return;
+                
+            await _dbGroupService.UpdateAsync((Group)p!);
             await UpdateSelectedCourseAsync(((Group)p!).CourseId);
         }
 

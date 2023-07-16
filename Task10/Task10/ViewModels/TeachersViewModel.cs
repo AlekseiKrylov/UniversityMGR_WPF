@@ -85,9 +85,10 @@ namespace Task10.ViewModels
         {
             var newTeacher = new Teacher();
 
-            if (_userDialogService.AddEdit(newTeacher))
-                await _dbTeacherService.AddAsync(newTeacher);
-
+            if (!_userDialogService.AddEdit(newTeacher))
+                return;
+                
+            await _dbTeacherService.AddAsync(newTeacher);
             UpdateTeachersList();
             await UpdateSelectedTeacher(newTeacher.Id);
             SelectedTeacher = newTeacher;
@@ -106,9 +107,10 @@ namespace Task10.ViewModels
 
         private async void OnEditTeacherCommandExecuted(object? p)
         {
-            if (_userDialogService.AddEdit(p!))
-                await _dbTeacherService.UpdateAsync((Teacher)p!);
+            if (!_userDialogService.AddEdit(p!))
+                return;
 
+            await _dbTeacherService.UpdateAsync((Teacher)p!);
             UpdateTeachersList();
             await UpdateSelectedTeacher(((Teacher)p!).Id);
             OnPropertyChanged(nameof(SelectedTeacher));

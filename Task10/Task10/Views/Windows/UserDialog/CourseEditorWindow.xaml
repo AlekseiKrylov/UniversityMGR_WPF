@@ -28,9 +28,6 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Margin" Value="0 2 3 0"/>
-                </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -44,9 +41,10 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Text="Description:" VerticalAlignment="Top"/>
 
             <TextBox Grid.Column="1" Grid.Row="0" MaxLength="50"
-                       Text="{Binding Course.Name}"/>
+                     Style="{StaticResource ValidationErrorTextBoxStyle}"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
             <TextBox Grid.Column="1" Grid.Row="1" MaxLength="1000" AcceptsReturn="True" TextWrapping="Wrap"
-                     Text="{Binding Course.Description}"/>
+                     Text="{Binding Description}"/>
         </Grid>
     </DockPanel>
 </Window>

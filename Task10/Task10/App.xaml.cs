@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 using System.Windows;
 using Task10.Data;
 
@@ -8,6 +9,7 @@ namespace Task10
 {
     public partial class App : Application
     {
+        public static Window ActiveWindow => Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsActive);
         public static IHost? AppHost { get; private set; }
 
         public App() => AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();

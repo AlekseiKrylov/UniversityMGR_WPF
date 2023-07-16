@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Task10.ViewModels.Base
@@ -14,7 +15,7 @@ namespace Task10.ViewModels.Base
 
         protected virtual bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            if (Equals(field, value))
+            if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
 
             field = value;

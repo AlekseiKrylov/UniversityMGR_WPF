@@ -90,9 +90,10 @@ namespace Task10.ViewModels
         {
             var newStudent = new Student();
 
-            if (_userDialogService.AddEdit(newStudent))
-                await _dbStudentService.AddAsync(newStudent);
-
+            if (!_userDialogService.AddEdit(newStudent))
+                return;
+                
+            await _dbStudentService.AddAsync(newStudent);
             UpdateStudentsList();
             await UpdateSelectedStudent(newStudent.Id);
             SelectedStudent = newStudent;
@@ -111,12 +112,14 @@ namespace Task10.ViewModels
 
         private async void OnEditStudentCommandExecuted(object? p)
         {
-            if (_userDialogService.AddEdit(p!))
-                await _dbStudentService.UpdateAsync((Student)p!);
+            if (!_userDialogService.AddEdit(p!))
+                return;
 
+            await _dbStudentService.UpdateAsync((Student)p!);
             UpdateStudentsList();
             await UpdateSelectedStudent(((Student)p!).Id);
-            OnPropertyChanged(nameof(SelectedStudent));
+            //OnPropertyChanged(nameof(SelectedStudent));
+            SelectedStudent = (Student)p!;
         }
 
         #endregion
