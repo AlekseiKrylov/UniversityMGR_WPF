@@ -5,7 +5,7 @@ namespace Task10.ViewModels
     internal class ViewModelLocator
     {
         public static MainWindowViewModel MainWindowVM => App.AppHost!.Services.GetRequiredService<MainWindowViewModel>();
-        public static CoursesAndGroupsViewModel CoursesVM => App.AppHost!.Services.GetRequiredService<CoursesAndGroupsViewModel>();
+        public static CoursesAndGroupsViewModel CoursesAndGroupsVM => App.AppHost!.Services.GetRequiredService<CoursesAndGroupsViewModel>();
         public static StudentsViewModel StudentsVM => App.AppHost!.Services.GetRequiredService<StudentsViewModel>();
         public static TeachersViewModel TeachersVM => App.AppHost!.Services.GetRequiredService<TeachersViewModel>();
         public static CourseEditorViewModel CourseEditorVM => App.AppHost!.Services.GetRequiredService<CourseEditorViewModel>();

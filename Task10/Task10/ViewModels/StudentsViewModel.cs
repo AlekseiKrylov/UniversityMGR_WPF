@@ -74,7 +74,7 @@ namespace Task10.ViewModels
         async void OnSelectStudentCommandExecuted(object? p)
         {
             var selectedStudent = (Student)p!;
-            await UpdateSelectedStudent(selectedStudent.Id);
+            await UpdateSelectedStudentAsync(selectedStudent.Id);
         }
 
         #endregion
@@ -95,9 +95,9 @@ namespace Task10.ViewModels
                 
             await _dbStudentService.AddAsync(newStudent);
             UpdateStudentsList();
-            await UpdateSelectedStudent(newStudent.Id);
-            SelectedStudent = newStudent;
-        }
+            await UpdateSelectedStudentAsync(newStudent.Id);
+            StudentsCollectionView?.MoveCurrentTo(newStudent);
+         }
 
         #endregion
 
@@ -117,9 +117,8 @@ namespace Task10.ViewModels
 
             await _dbStudentService.UpdateAsync((Student)p!);
             UpdateStudentsList();
-            await UpdateSelectedStudent(((Student)p!).Id);
-            //OnPropertyChanged(nameof(SelectedStudent));
-            SelectedStudent = (Student)p!;
+            await UpdateSelectedStudentAsync(((Student)p!).Id);
+            StudentsCollectionView?.MoveCurrentTo((Student)p!);
         }
 
         #endregion
@@ -158,7 +157,7 @@ namespace Task10.ViewModels
             OnPropertyChanged(nameof(StudentsCollectionView));
         }
 
-        private async Task UpdateSelectedStudent(int id)
+        private async Task UpdateSelectedStudentAsync(int id)
         {
             SelectedStudent = await _dbStudentService.GetDetailAsync(id);
         }

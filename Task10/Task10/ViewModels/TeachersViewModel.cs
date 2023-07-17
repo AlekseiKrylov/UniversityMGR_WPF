@@ -69,7 +69,7 @@ namespace Task10.ViewModels
         async void OnSelectTeacherCommandExecuted(object? p)
         {
             var selectedTeacher = (Teacher)p!;
-            await UpdateSelectedTeacher(selectedTeacher.Id);
+            await UpdateSelectedTeacherAsync(selectedTeacher.Id);
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace Task10.ViewModels
                 
             await _dbTeacherService.AddAsync(newTeacher);
             UpdateTeachersList();
-            await UpdateSelectedTeacher(newTeacher.Id);
+            await UpdateSelectedTeacherAsync(newTeacher.Id);
             SelectedTeacher = newTeacher;
         }
 
@@ -112,7 +112,7 @@ namespace Task10.ViewModels
 
             await _dbTeacherService.UpdateAsync((Teacher)p!);
             UpdateTeachersList();
-            await UpdateSelectedTeacher(((Teacher)p!).Id);
+            await UpdateSelectedTeacherAsync(((Teacher)p!).Id);
             OnPropertyChanged(nameof(SelectedTeacher));
         }
 
@@ -151,7 +151,7 @@ namespace Task10.ViewModels
             Teachers = new ObservableCollection<Teacher>(teachers);
         }
 
-        private async Task UpdateSelectedTeacher(int id)
+        private async Task UpdateSelectedTeacherAsync(int id)
         {
             SelectedTeacher = await _dbTeacherService.GetDetailAsync(id);
             Groups = new ObservableCollection<Group>(SelectedTeacher.Groups);

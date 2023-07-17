@@ -35,7 +35,7 @@ namespace Task10.ViewModels
             get => _group;
             set
             {
-                if (value != null && value.Name == "No Group")
+                if (value != null && value.Name == _emptyGroup.Name)
                     value = null;
                 SetProperty(ref _group, value);
             }

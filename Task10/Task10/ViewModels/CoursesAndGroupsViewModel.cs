@@ -128,7 +128,7 @@ namespace Task10.ViewModels
 
             if (!_userDialogService.AddEdit(newCourse))
                 return;
-                
+
             await _dbCourseService.AddAsync(newCourse);
             UpdateCourseList();
             SelectedCourse = newCourse;
@@ -224,7 +224,7 @@ namespace Task10.ViewModels
 
             if (!_userDialogService.AddEdit(newGroup))
                 return;
-                
+
             await _dbGroupService.AddAsync(newGroup);
             await UpdateSelectedCourseAsync(course.Id);
             SelectedGroup = newGroup;
@@ -244,7 +244,7 @@ namespace Task10.ViewModels
         {
             if (!_userDialogService.AddEdit(p!))
                 return;
-                
+
             await _dbGroupService.UpdateAsync((Group)p!);
             await UpdateSelectedCourseAsync(((Group)p!).CourseId);
         }
