@@ -1,22 +1,22 @@
 ﻿using System.Windows;
-using Task10.Infrastructure.Commands.Base;
-using Task10.ViewModels.UserDialog.Interfaces;
+using UniversityMGR_WPF.Infrastructure.Commands.Base;
+using UniversityMGR_WPF.ViewModels.UserDialog.Interfaces;
 
-namespace Task10.Infrastructure.Commands
+namespace UniversityMGR_WPF.Infrastructure.Commands
 {
     internal class CloseDialogCommand : CommandBase
     {
         public bool DialogResult { get; set; }
-        
+
         protected override bool CanExecute(object? parameter)
         {
             if (parameter is null || parameter is not Window)
                 return false;
-                
+
             var window = (Window)parameter!;
             var viewModel = window.DataContext as IValidatable;
-            
-            if (DialogResult && (window.DataContext as IValidatable) is not null)
+
+            if (DialogResult && window.DataContext as IValidatable is not null)
                 return viewModel!.IsValid;
 
             return true;

@@ -1,6 +1,6 @@
-﻿using Task10.ViewModels.Base;
+﻿using UniversityMGR_WPF.ViewModels.Base;
 
-namespace Task10.ViewModels
+namespace UniversityMGR_WPF.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {

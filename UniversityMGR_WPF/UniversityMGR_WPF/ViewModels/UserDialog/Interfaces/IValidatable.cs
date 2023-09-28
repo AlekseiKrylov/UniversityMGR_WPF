@@ -1,4 +1,4 @@
-﻿namespace Task10.ViewModels.UserDialog.Interfaces
+﻿namespace UniversityMGR_WPF.ViewModels.UserDialog.Interfaces
 {
     internal interface IValidatable
     {

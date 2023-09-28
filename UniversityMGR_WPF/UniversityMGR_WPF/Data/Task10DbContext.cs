@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Task10.Models;
+using UniversityMGR_WPF.Models;
 
-namespace Task10.Data
+namespace UniversityMGR_WPF.Data
 {
     internal class Task10DbContext : DbContext
     {

@@ -2,15 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using Task10.Data;
-using Task10.Models;
-using Task10.Services;
-using Task10.Services.DbServices;
-using Task10.Services.DbServices.Interfaces;
-using Task10.Services.Interfaces;
-using Task10.ViewModels;
+using UniversityMGR_WPF.Data;
+using UniversityMGR_WPF.Models;
+using UniversityMGR_WPF.Services;
+using UniversityMGR_WPF.Services.DbServices;
+using UniversityMGR_WPF.Services.DbServices.Interfaces;
+using UniversityMGR_WPF.Services.Interfaces;
+using UniversityMGR_WPF.ViewModels;
+using UniversityMGR_WPF.ViewModels.UserDialog;
 
-namespace Task10
+namespace UniversityMGR_WPF
 {
     internal static class Registrator
     {

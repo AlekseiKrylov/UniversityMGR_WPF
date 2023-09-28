@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Task10.Infrastructure.CustomAttribures
+namespace UniversityMGR_WPF.Infrastructure.CustomAttribures
 {
     [AttributeUsage(AttributeTargets.Property)]
     internal class ValidatePropertyAttribute : Attribute

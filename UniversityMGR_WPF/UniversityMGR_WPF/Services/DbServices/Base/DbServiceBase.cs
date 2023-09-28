@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Task10.Data;
-using Task10.Models.Base;
-using Task10.Services.DbServices.Interfaces;
+using UniversityMGR_WPF.Data;
+using UniversityMGR_WPF.Models.Base;
+using UniversityMGR_WPF.Services.DbServices.Interfaces;
 
-namespace Task10.Services.DbServices.Base
+namespace UniversityMGR_WPF.Services.DbServices.Base
 {
     internal class DbServiceBase<T> : IDbService<T> where T : Entity, new()
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace Task10.Data
+namespace UniversityMGR_WPF.Data
 {
     internal class DbInitializer
     {

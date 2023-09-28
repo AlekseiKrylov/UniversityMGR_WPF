@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Task10.Infrastructure.FileGenerators;
-using Task10.Infrastructure.FileParsers;
-using Task10.Models;
-using Task10.Services.Interfaces;
+using UniversityMGR_WPF.Infrastructure.FileGenerators;
+using UniversityMGR_WPF.Infrastructure.FileParsers;
+using UniversityMGR_WPF.Models;
+using UniversityMGR_WPF.Services.Interfaces;
 
-namespace Task10.Services
+namespace UniversityMGR_WPF.Services
 {
     class FileService : IFileService
     {

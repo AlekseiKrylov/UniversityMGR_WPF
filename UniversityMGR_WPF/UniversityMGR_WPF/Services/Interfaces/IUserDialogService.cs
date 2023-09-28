@@ -1,4 +1,4 @@
-﻿namespace Task10.Services.Interfaces
+﻿namespace UniversityMGR_WPF.Services.Interfaces
 {
     internal interface IUserDialogService
     {

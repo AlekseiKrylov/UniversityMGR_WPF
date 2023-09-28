@@ -1,4 +1,4 @@
-﻿namespace Task10.Models.Base.Interfaces
+﻿namespace UniversityMGR_WPF.Models.Base.Interfaces
 {
     internal interface IEntity
     {

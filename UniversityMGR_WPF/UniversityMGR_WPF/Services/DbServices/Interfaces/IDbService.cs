@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Task10.Models.Base.Interfaces;
+using UniversityMGR_WPF.Models.Base.Interfaces;
 
-namespace Task10.Services.DbServices.Interfaces
+namespace UniversityMGR_WPF.Services.DbServices.Interfaces
 {
     internal interface IDbService<T> where T : class, IEntity, new()
     {

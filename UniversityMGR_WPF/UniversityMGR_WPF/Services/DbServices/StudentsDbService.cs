@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Task10.Data;
-using Task10.Models;
-using Task10.Services.DbServices.Base;
+using UniversityMGR_WPF.Data;
+using UniversityMGR_WPF.Models;
+using UniversityMGR_WPF.Services.DbServices.Base;
 
-namespace Task10.Services.DbServices
+namespace UniversityMGR_WPF.Services.DbServices
 {
     internal class StudentsDbService : DbServiceBase<Student>
     {

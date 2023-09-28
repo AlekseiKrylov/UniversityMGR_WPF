@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Task10.Models.Base;
+using UniversityMGR_WPF.Models.Base;
 
-namespace Task10.Models
+namespace UniversityMGR_WPF.Models
 {
     internal class Group : NamedEntity
     {

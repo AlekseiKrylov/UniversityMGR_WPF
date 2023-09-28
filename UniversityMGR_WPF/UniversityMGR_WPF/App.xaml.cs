@@ -3,7 +3,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Windows;
-using Task10.Data;
+using UniversityMGR_WPF;
+using UniversityMGR_WPF.Data;
 
 namespace Task10
 {

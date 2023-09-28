@@ -3,13 +3,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Task10.Infrastructure.Commands;
-using Task10.Models;
-using Task10.Services.DbServices.Interfaces;
-using Task10.Services.Interfaces;
-using Task10.ViewModels.Base;
+using UniversityMGR_WPF.Infrastructure.Commands;
+using UniversityMGR_WPF.Models;
+using UniversityMGR_WPF.Services.DbServices.Interfaces;
+using UniversityMGR_WPF.Services.Interfaces;
+using UniversityMGR_WPF.ViewModels.Base;
 
-namespace Task10.ViewModels
+namespace UniversityMGR_WPF.ViewModels
 {
     internal class TeachersViewModel : ViewModelBase
     {
@@ -87,7 +87,7 @@ namespace Task10.ViewModels
 
             if (!_userDialogService.AddEdit(newTeacher))
                 return;
-                
+
             await _dbTeacherService.AddAsync(newTeacher);
             UpdateTeachersList();
             await UpdateSelectedTeacherAsync(newTeacher.Id);

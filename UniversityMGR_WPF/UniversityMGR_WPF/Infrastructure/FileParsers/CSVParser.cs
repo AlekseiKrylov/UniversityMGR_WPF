@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using Task10.Models;
+using UniversityMGR_WPF.Models;
 
-namespace Task10.Infrastructure.FileParsers
+namespace UniversityMGR_WPF.Infrastructure.FileParsers
 {
     internal class CSVParser
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Task10.Models.Base
+namespace UniversityMGR_WPF.Models.Base
 {
     internal abstract class NamedEntity : Entity
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Task10.Models.Base;
+using UniversityMGR_WPF.Models.Base;
 
-namespace Task10.Models
+namespace UniversityMGR_WPF.Models
 {
     internal class Teacher : Person
     {

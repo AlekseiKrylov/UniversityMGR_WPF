@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Task10.Infrastructure.Commands.Base
+namespace UniversityMGR_WPF.Infrastructure.Commands.Base
 {
     internal abstract class CommandBase : ICommand
     {

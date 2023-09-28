@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Task10.Infrastructure.CustomAttribures;
-using Task10.ViewModels.UserDialog.Interfaces;
+using UniversityMGR_WPF.Infrastructure.CustomAttribures;
+using UniversityMGR_WPF.ViewModels.UserDialog.Interfaces;
 
-namespace Task10.ViewModels.Base
+namespace UniversityMGR_WPF.ViewModels.Base
 {
     internal abstract class ValidatableViewModelBase : INotifyPropertyChanged, IDataErrorInfo, IValidatable
     {
@@ -33,7 +33,7 @@ namespace Task10.ViewModels.Base
             }
 
             field = value;
-            
+
             if (ShouldValidateProperty(propertyName))
                 ValidateProperty(propertyName);
 

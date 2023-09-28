@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Task10;
+using UniversityMGR_WPF.ViewModels.UserDialog;
 
-namespace Task10.ViewModels
+namespace UniversityMGR_WPF.ViewModels
 {
     internal class ViewModelLocator
     {

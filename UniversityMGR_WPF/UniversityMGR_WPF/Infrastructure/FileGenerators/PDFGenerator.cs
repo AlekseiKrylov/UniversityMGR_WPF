@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using Task10.Models;
+using UniversityMGR_WPF.Models;
 
-namespace Task10.Infrastructure.FileGenerators
+namespace UniversityMGR_WPF.Infrastructure.FileGenerators
 {
     internal class PDFGenerator
     {

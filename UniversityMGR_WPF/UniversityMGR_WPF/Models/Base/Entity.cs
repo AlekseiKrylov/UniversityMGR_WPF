@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Task10.Models.Base.Interfaces;
+using UniversityMGR_WPF.Models.Base.Interfaces;
 
-namespace Task10.Models.Base
+namespace UniversityMGR_WPF.Models.Base
 {
     internal abstract class Entity : IEntity
     {

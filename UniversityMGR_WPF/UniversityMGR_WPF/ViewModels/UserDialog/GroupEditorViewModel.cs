@@ -2,11 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Task10.Infrastructure.CustomAttribures;
-using Task10.Models;
-using Task10.Services.DbServices.Interfaces;
-using Task10.ViewModels.Base;
+using UniversityMGR_WPF.Models;
+using UniversityMGR_WPF.Services.DbServices.Interfaces;
+using UniversityMGR_WPF.ViewModels.Base;
 
-namespace Task10.ViewModels
+namespace UniversityMGR_WPF.ViewModels.UserDialog
 {
     internal class GroupEditorViewModel : ValidatableViewModelBase
     {

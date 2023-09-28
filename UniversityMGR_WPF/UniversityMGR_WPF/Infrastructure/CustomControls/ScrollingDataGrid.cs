@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Task10.Infrastructure.CustomControls
+namespace UniversityMGR_WPF.Infrastructure.CustomControls
 {
     internal class ScrollingDataGrid : DataGrid
     {

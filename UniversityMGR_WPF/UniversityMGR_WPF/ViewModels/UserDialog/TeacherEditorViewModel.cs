@@ -1,13 +1,13 @@
 ﻿using Task10.Infrastructure.CustomAttribures;
-using Task10.ViewModels.Base;
+using UniversityMGR_WPF.ViewModels.Base;
 
-namespace Task10.ViewModels
+namespace UniversityMGR_WPF.ViewModels.UserDialog
 {
     internal class TeacherEditorViewModel : ValidatableViewModelBase
     {
         private string _name;
         private string? _surname;
-        
+
         [ValidateProperty]
         public string Name
         {

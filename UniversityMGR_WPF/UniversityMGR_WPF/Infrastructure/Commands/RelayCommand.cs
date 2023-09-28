@@ -1,7 +1,7 @@
 ﻿using System;
-using Task10.Infrastructure.Commands.Base;
+using UniversityMGR_WPF.Infrastructure.Commands.Base;
 
-namespace Task10.Infrastructure.Commands
+namespace UniversityMGR_WPF.Infrastructure.Commands
 {
     internal class RelayCommand : CommandBase
     {
