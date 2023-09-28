@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Task10.Infrastructure.CustomAttribures;
+using UniversityMGR_WPF.Infrastructure.CustomAttribures;
 using UniversityMGR_WPF.Models;
 using UniversityMGR_WPF.Services.DbServices.Interfaces;
 using UniversityMGR_WPF.ViewModels.Base;

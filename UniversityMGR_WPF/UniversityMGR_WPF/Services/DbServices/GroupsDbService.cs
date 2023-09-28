@@ -10,9 +10,9 @@ namespace UniversityMGR_WPF.Services.DbServices
 {
     internal class GroupsDbService : DbServiceBase<Group>
     {
-        private readonly Task10DbContext _db;
+        private readonly UniversityMGRDbContext _db;
 
-        public GroupsDbService(Task10DbContext db) : base(db) => _db = db;
+        public GroupsDbService(UniversityMGRDbContext db) : base(db) => _db = db;
 
         public override async Task<Group> GetDetailAsync(int id, CancellationToken cancel = default)
         {

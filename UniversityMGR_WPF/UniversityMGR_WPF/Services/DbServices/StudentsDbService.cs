@@ -10,9 +10,9 @@ namespace UniversityMGR_WPF.Services.DbServices
 {
     internal class StudentsDbService : DbServiceBase<Student>
     {
-        private readonly Task10DbContext _db;
+        private readonly UniversityMGRDbContext _db;
 
-        public StudentsDbService(Task10DbContext db) : base(db) => _db = db;
+        public StudentsDbService(UniversityMGRDbContext db) : base(db) => _db = db;
 
         public override IQueryable<Student> Items => base.Items.Include(s => s.Group);
 

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Task10.Migrations
+namespace UniversityMGR_WPF.Migrations
 {
     public partial class Initial : Migration
     {

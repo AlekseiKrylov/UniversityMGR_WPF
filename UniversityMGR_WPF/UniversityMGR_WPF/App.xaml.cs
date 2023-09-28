@@ -3,10 +3,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Windows;
-using UniversityMGR_WPF;
 using UniversityMGR_WPF.Data;
 
-namespace Task10
+namespace UniversityMGR_WPF
 {
     public partial class App : Application
     {

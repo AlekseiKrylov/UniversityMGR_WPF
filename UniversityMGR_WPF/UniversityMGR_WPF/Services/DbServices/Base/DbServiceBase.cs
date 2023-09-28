@@ -12,10 +12,10 @@ namespace UniversityMGR_WPF.Services.DbServices.Base
 {
     internal class DbServiceBase<T> : IDbService<T> where T : Entity, new()
     {
-        private readonly Task10DbContext _db;
+        private readonly UniversityMGRDbContext _db;
         private readonly DbSet<T> _dbSet;
 
-        public DbServiceBase(Task10DbContext db)
+        public DbServiceBase(UniversityMGRDbContext db)
         {
             _db = db;
             _dbSet = _db.Set<T>();

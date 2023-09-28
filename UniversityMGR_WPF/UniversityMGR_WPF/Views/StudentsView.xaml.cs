@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Task10.Views
+namespace UniversityMGR_WPF.Views
 {
     public partial class StudentsView : UserControl
     {

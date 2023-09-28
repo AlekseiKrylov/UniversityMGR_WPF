@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Task10.Views.Windows
+namespace UniversityMGR_WPF.Views.Windows
 {
     public partial class GroupEditorWindow : Window
     {

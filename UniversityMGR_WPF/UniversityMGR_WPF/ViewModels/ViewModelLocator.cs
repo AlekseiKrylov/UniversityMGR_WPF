@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Task10;
 using UniversityMGR_WPF.ViewModels.UserDialog;
 
 namespace UniversityMGR_WPF.ViewModels

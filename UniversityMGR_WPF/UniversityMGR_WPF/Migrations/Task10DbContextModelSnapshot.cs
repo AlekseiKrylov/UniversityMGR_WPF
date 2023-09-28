@@ -7,17 +7,17 @@ using UniversityMGR_WPF.Data;
 
 #nullable disable
 
-namespace Task10.Migrations
+namespace UniversityMGR_WPF.Migrations
 {
-    [DbContext(typeof(Task10DbContext))]
-    partial class Task10DbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UniversityMGRDbContext))]
+    partial class UniversityMGR_WPFDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.18");
 
-            modelBuilder.Entity("Task10.Models.Course", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,7 @@ namespace Task10.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("Task10.Models.Group", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace Task10.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("Task10.Models.Student", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +88,7 @@ namespace Task10.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Task10.Models.Teacher", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,15 +108,15 @@ namespace Task10.Migrations
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("Task10.Models.Group", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Group", b =>
                 {
-                    b.HasOne("Task10.Models.Course", "Course")
+                    b.HasOne("UniversityMGR_WPF.Models.Course", "Course")
                         .WithMany("Groups")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Task10.Models.Teacher", "Teacher")
+                    b.HasOne("UniversityMGR_WPF.Models.Teacher", "Teacher")
                         .WithMany("Groups")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -127,26 +127,26 @@ namespace Task10.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Task10.Models.Student", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Student", b =>
                 {
-                    b.HasOne("Task10.Models.Group", "Group")
+                    b.HasOne("UniversityMGR_WPF.Models.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId");
 
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("Task10.Models.Course", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Course", b =>
                 {
                     b.Navigation("Groups");
                 });
 
-            modelBuilder.Entity("Task10.Models.Group", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Group", b =>
                 {
                     b.Navigation("Students");
                 });
 
-            modelBuilder.Entity("Task10.Models.Teacher", b =>
+            modelBuilder.Entity("UniversityMGR_WPF.Models.Teacher", b =>
                 {
                     b.Navigation("Groups");
                 });

@@ -1,11 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Windows;
-using Task10;
-using Task10.Views.Windows;
 using UniversityMGR_WPF.Models;
 using UniversityMGR_WPF.Services.Interfaces;
 using UniversityMGR_WPF.ViewModels.UserDialog;
+using UniversityMGR_WPF.Views.Windows;
 
 namespace UniversityMGR_WPF.Services
 {

@@ -1,9 +1,9 @@
-﻿<Application x:Class="Task10.App"
+﻿<Application x:Class="UniversityMGR_WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:l="clr-namespace:Task10"
-             xmlns:vm="clr-namespace:Task10.ViewModels"
-             xmlns:cmd="clr-namespace:Task10.Infrastructure.Commands"
+             xmlns:l="clr-namespace:UniversityMGR_WPF"
+             xmlns:vm="clr-namespace:UniversityMGR_WPF.ViewModels"
+             xmlns:cmd="clr-namespace:UniversityMGR_WPF.Infrastructure.Commands"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

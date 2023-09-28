@@ -1,4 +1,4 @@
-﻿using Task10.Infrastructure.CustomAttribures;
+﻿using UniversityMGR_WPF.Infrastructure.CustomAttribures;
 using UniversityMGR_WPF.ViewModels.Base;
 
 namespace UniversityMGR_WPF.ViewModels.UserDialog

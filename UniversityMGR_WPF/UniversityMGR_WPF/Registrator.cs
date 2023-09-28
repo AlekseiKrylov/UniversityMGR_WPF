@@ -27,9 +27,9 @@ namespace UniversityMGR_WPF
             ;
 
         public static IServiceCollection AddDatabase(this IServiceCollection services) => services
-            .AddDbContext<Task10DbContext>(options =>
+            .AddDbContext<UniversityMGRDbContext>(options =>
             {
-                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Task10.db");
+                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UniversityMGR_WPF.db");
                 options.UseSqlite($"Filename={dbPath}");
             })
             .AddTransient<DbInitializer>()

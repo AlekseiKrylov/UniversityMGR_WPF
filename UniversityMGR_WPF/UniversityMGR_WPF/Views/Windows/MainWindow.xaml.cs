@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Task10
+namespace UniversityMGR_WPF
 {
     public partial class MainWindow : Window
     {
