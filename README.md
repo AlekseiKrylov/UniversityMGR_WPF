@@ -1,6 +1,14 @@
 # University Management
+![Static Badge](https://img.shields.io/badge/Net_6.0-blue)
+![Static Badge](https://img.shields.io/badge/WPF_(MVVM)-blue)
+![Static Badge](https://img.shields.io/badge/Entity_Framework_Core-blue)
+![Static Badge](https://img.shields.io/badge/SQLite-blue)
+![Static Badge](https://img.shields.io/badge/FontAwesome6-blue)
+![Static Badge](https://img.shields.io/badge/MigraDoc-blue)
+![Static Badge](https://img.shields.io/badge/OpenXml-blue)
 
 University Management is a desktop WPF application built on CRUD operations to handle all necessary data about students, groups, teachers and courses.
+Ability to export student list to PDF, DOCX, CSV formats and import from CSV format is available.
 
 ### Screenshots
 
